@@ -11,6 +11,10 @@ services:
     depends_on:
       - service-b
       - otel-collector
+    networks:
+      - otel-net
+    extra_hosts:
+      - "nginx-gateway:10.1.1.5"
 
   service-b:
     build: ./service-b
@@ -23,6 +27,8 @@ services:
       - OTEL_METRICS_EXPORTER=otlp
     depends_on:
       - otel-collector
+    networks:
+      - otel-net
 
   otel-collector:
     image: otel/opentelemetry-collector-contrib:0.109.0
@@ -30,14 +36,11 @@ services:
     volumes:
       - ./otel-collector-config.yml:/etc/otel-collector-config.yml
     ports:
-      - "4317:4317"  # HTTP receiver
-      - "4318:4318"  # gRPC receiver
-      - "8888:8888"  # Prometheus metrics exporter
-    depends_on:
-      - jaeger
+      - "4317:4317"  # OTLP HTTP
+      - "4318:4318"  # OTLP gRPC
+      - "8888:8888"  # Prometheus metrics (optional)
+      - "16686:16686"  # Jaeger v2 UI
+      - "14268:14268"
+    networks:
+      - otel-net
 
-  jaeger:
-    image: jaegertracing/all-in-one:latest
-    ports:
-      - "16686:16686"  # Jaeger UI
-      - "14268:14268"  # HTTP collector for traces
