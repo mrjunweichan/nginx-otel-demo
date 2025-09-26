@@ -1,20 +1,5 @@
 version: '3.8'
 services:
-  nginx:
-    image: nginx:1.25  # Use latest stable; for NGINX Plus, use your licensed image
-    ports:
-      - "8080:80"  # Expose NGINX on host port 8080
-    volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf:ro  # Mount custom config
-      - ./otel-nginx-module:/etc/nginx/modules  # Mount OTEL module
-    depends_on:
-      - service-a
-    environment:
-      - OTEL_EXPORTER_OTLP_ENDPOINT=http://otel-collector:4318  # gRPC endpoint for OTEL export
-      - OTEL_SERVICE_NAME=nginx-gateway
-      - OTEL_TRACES_EXPORTER=otlp
-      - OTEL_METRICS_EXPORTER=otlp
-
   service-a:
     build: ./service-a
     ports:
