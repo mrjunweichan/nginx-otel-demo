@@ -8,7 +8,7 @@ app = Flask(__name__)
 def hello():
     with trace.get_tracer(__name__).start_as_current_span("call-service-b"):
         response = requests.get('http://service-b:5001/')  # Call Service B
-    return f"Hello from Service A! Response from B: {response.text}"
+    return f"Hello from Service A!\nResponse from B: {response.text}"
 
 if __name__ == '__main__':
     app.run()
