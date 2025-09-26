@@ -2,15 +2,17 @@ receivers:
   otlp:
     protocols:
       grpc:
+        endpoint: 0.0.0.0:4318
       http:
+        endpoint: 0.0.0.0:4317
 processors:
   batch:
 exporters:
   jaeger:
-    endpoint: jaeger:14250
+    endpoint: "0.0.0.0:14268"
     tls:
       insecure: true
-  logging:  # For debugging
+  logging:
     loglevel: debug
 service:
   pipelines:
@@ -18,7 +20,8 @@ service:
       receivers: [otlp]
       processors: [batch]
       exporters: [jaeger, logging]
-    metrics:
-      receivers: [otlp]
-      processors: [batch]
-      exporters: [logging]  # Add Prometheus if needed
+  extensions: [jaegerquery]
+extensions:
+  jaegerquery:
+    http-server:
+      endpoint: 0.0.0.0:16686
