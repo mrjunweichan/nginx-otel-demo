@@ -4,7 +4,7 @@ services:
     ports:
       - "5000:5000"
     environment:
-      - OTEL_EXPORTER_OTLP_ENDPOINT=http://otel-collector:4317  # HTTP for simplicity in Python
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://otel-collector:4317
       - OTEL_SERVICE_NAME=service-a
       - OTEL_TRACES_EXPORTER=otlp
       - OTEL_METRICS_EXPORTER=otlp
@@ -39,8 +39,18 @@ services:
       - "4317:4317"  # OTLP HTTP
       - "4318:4318"  # OTLP gRPC
       - "8888:8888"  # Prometheus metrics (optional)
-      - "16686:16686"  # Jaeger v2 UI
-      - "14268:14268"
+    depends_on:
+      - jaeger
+    networks:
+      - otel-net
+
+  jaeger:
+    image: jaegertracing/all-in-one:latest
+    ports:
+      - "16686:16686"  # Jaeger UI
+      - "14268:14268"  # Jaeger HTTP collector (optional)
+      - "4317:4317"    # OTLP gRPC (for collector export)
+      - "4318:4318"    # OTLP HTTP (optional)
     networks:
       - otel-net
 
