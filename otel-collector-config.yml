@@ -5,23 +5,25 @@ receivers:
         endpoint: 0.0.0.0:4318
       http:
         endpoint: 0.0.0.0:4317
+
 processors:
   batch:
+
 exporters:
-  jaeger:
-    endpoint: "0.0.0.0:14268"
+  otlp/jaeger:
+    endpoint: jaeger:4317
     tls:
       insecure: true
   logging:
     loglevel: debug
+
 service:
   pipelines:
     traces:
       receivers: [otlp]
       processors: [batch]
-      exporters: [jaeger, logging]
-  extensions: [jaegerquery]
-extensions:
-  jaegerquery:
-    http-server:
-      endpoint: 0.0.0.0:16686
+      exporters: [otlp/jaeger, logging]
+    metrics:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [logging]
