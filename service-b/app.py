@@ -4,7 +4,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def world():
-    return "Hello from Service B!"
+    return "Hello from Service B!\n"
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5001)
