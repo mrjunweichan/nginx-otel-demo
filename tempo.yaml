@@ -1,6 +1,6 @@
 server:
   http_listen_port: 3200
-  log_level: debug
+  log_level: debug  # For troubleshooting
 
 distributor:
   receivers:
@@ -16,9 +16,17 @@ metrics_generator:
     external_labels:
       source: tempo
     collection_interval: 15s
-  processors:
-    - service-graphs: {}
-    - span-metrics: {}
+  processor:
+    service_graphs:
+      enabled: true
+      max_items: 1000
+      wait: 10s
+      workers: 2
+    span_metrics:
+      enabled: true
+      histograms:
+        - name: duration_ms
+          buckets: [0, 10, 50, 100, 500, 1000, 5000]
 
 storage:
   trace:
