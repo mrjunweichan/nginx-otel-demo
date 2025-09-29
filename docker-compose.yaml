@@ -4,7 +4,7 @@ services:
     ports:
       - "5000:5000"
     environment:
-      - OTEL_EXPORTER_OTLP_ENDPOINT=http://otel-collector:4317
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://tempo:4317
       - OTEL_SERVICE_NAME=service-a
       - OTEL_TRACES_EXPORTER=otlp
       - OTEL_METRICS_EXPORTER=otlp
@@ -21,7 +21,7 @@ services:
     ports:
       - "5001:5001"
     environment:
-      - OTEL_EXPORTER_OTLP_ENDPOINT=http://otel-collector:4317
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://tempo:4317
       - OTEL_SERVICE_NAME=service-b
       - OTEL_TRACES_EXPORTER=otlp
       - OTEL_METRICS_EXPORTER=otlp
@@ -30,27 +30,30 @@ services:
     networks:
       - otel-net
 
-  otel-collector:
-    image: otel/opentelemetry-collector-contrib:0.109.0
-    command: [--config=/etc/otel-collector-config.yml]
+  tempo:
+    image: grafana/tempo:latest
+    command: ["-config.file=/etc/tempo.yaml"]
     volumes:
-      - ./otel-collector-config.yml:/etc/otel-collector-config.yml
+      - ./tempo.yaml:/etc/tempo.yaml
     ports:
-      - "4317:4317"  # OTLP HTTP
-      - "4318:4318"  # OTLP gRPC
-      - "8888:8888"  # Prometheus metrics (optional)
-    depends_on:
-      - jaeger
+      - "3200:3200"  # Tempo HTTP API
+      - "4317:4317"  # OTLP gRPC (for NGINX/services)
+      - "4318:4318"  # OTLP HTTP
+      - "9411:9411"  # Zipkin (optional)
     networks:
       - otel-net
-
-  jaeger:
-    image: jaegertracing/all-in-one:latest
+  
+  grafana:
+    image: grafana/grafana:latest
     ports:
-      - "16686:16686"  # Jaeger UI
-      - "14268:14268"  # Jaeger HTTP collector (optional)
-      - "14317:4317"    # OTLP gRPC (for collector export)
-      - "14318:4318"    # OTLP HTTP (optional)
+      - "3000:3000"
+    environment:
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+    volumes:
+      - ./grafana-datasources.yaml:/etc/grafana/provisioning/datasources/datasources.yaml
+    depends_on:
+      - tempo
     networks:
       - otel-net
 
