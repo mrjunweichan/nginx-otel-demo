@@ -2,21 +2,25 @@ from flask import Flask
 import requests
 from opentelemetry import trace
 from opentelemetry.instrumentation.flask import FlaskInstrumentor
-from opentelemetry.exporter.otlp.proto.grpc.trace_exporter import OTLPSpanExporter
+from opentelemetry.instrumentation.requests import RequestsInstrumentor
+from opentelemetry.exporter.otlp.proto.http.trace_exporter import OTLPSpanExporter
 from opentelemetry.sdk.trace import TracerProvider
 from opentelemetry.sdk.trace.export import BatchSpanProcessor
 from opentelemetry.sdk.resources import Resource
 
 app = Flask(__name__)
 
-# Set up OpenTelemetry with explicit service.name
+# Set up OpenTelemetry
 resource = Resource(attributes={"service.name": "service-a"})
 trace.set_tracer_provider(TracerProvider(resource=resource))
 tracer = trace.get_tracer(__name__)
-otlp_exporter = OTLPSpanExporter(endpoint="http://tempo:4317", insecure=True)
+otlp_exporter = OTLPSpanExporter(endpoint="http://tempo:4317/v1/traces")
 span_processor = BatchSpanProcessor(otlp_exporter)
 trace.get_tracer_provider().add_span_processor(span_processor)
+
+# Instrument Flask and requests
 FlaskInstrumentor().instrument_app(app)
+RequestsInstrumentor().instrument()
 
 @app.route('/')
 def hello():
