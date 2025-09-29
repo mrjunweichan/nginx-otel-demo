@@ -15,18 +15,12 @@ metrics_generator:
   registry:
     external_labels:
       source: tempo
-    collection_interval: 15s
-  processor:
-    service_graphs:
-      enabled: true
-      max_items: 1000
-      wait: 10s
-      workers: 2
-    span_metrics:
-      enabled: true
-      histograms:
-        - name: duration_ms
-          buckets: [0, 10, 50, 100, 500, 1000, 5000]
+      cluster: docker-compose
+  storage:
+    path: /var/tempo/generator/wal
+    remote_write:
+    - url: http://localhost:9090/api/v1/write
+      send_exemplars: true
 
 storage:
   trace:
