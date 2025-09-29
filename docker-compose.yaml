@@ -49,8 +49,8 @@ services:
     ports:
       - "16686:16686"  # Jaeger UI
       - "14268:14268"  # Jaeger HTTP collector (optional)
-      - "4317:4317"    # OTLP gRPC (for collector export)
-      - "4318:4318"    # OTLP HTTP (optional)
+      - "14317:4317"    # OTLP gRPC (for collector export)
+      - "14318:4318"    # OTLP HTTP (optional)
     networks:
       - otel-net
 
