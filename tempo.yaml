@@ -1,5 +1,6 @@
 server:
   http_listen_port: 3200
+  log_level: debug
 
 distributor:
   receivers:
@@ -11,9 +12,13 @@ distributor:
           endpoint: 0.0.0.0:4318
 
 metrics_generator:
-  enabled: true
-  service_graphs:
-    enabled: true
+  registry:
+    external_labels:
+      source: tempo
+    collection_interval: 15s
+  processors:
+    - service-graphs: {}
+    - span-metrics: {}
 
 storage:
   trace:
