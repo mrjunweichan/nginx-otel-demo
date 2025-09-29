@@ -10,7 +10,7 @@ services:
       - OTEL_METRICS_EXPORTER=otlp
     depends_on:
       - service-b
-      - otel-collector
+      - tempo
     networks:
       - otel-net
     extra_hosts:
@@ -26,7 +26,7 @@ services:
       - OTEL_TRACES_EXPORTER=otlp
       - OTEL_METRICS_EXPORTER=otlp
     depends_on:
-      - otel-collector
+      - tempo
     networks:
       - otel-net
 
