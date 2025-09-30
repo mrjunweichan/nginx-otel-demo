@@ -20,4 +20,4 @@ datasources:
       exemplarTraceIdDestinations:
         - name: traceID
           # datasourceUid: tempo
-          # datasourceUid: tempo_datasource
+          datasourceUid: tempo_datasource
