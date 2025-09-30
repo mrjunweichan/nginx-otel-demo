@@ -2,7 +2,7 @@ apiVersion: 1
 datasources:
   - name: Tempo
     type: tempo
-    uid: tempo_datasource
+    # uid: tempo_datasource
     # url: http://tempo:3200
     url: http://localhost:3200
     access: proxy
@@ -13,7 +13,7 @@ datasources:
 
   - name: Prometheus
     type: prometheus
-    uid: prometheus_datasource
+    # uid: prometheus_datasource
     # url: http://prometheus:9090
     url: http://localhost:9090
     access: proxy
