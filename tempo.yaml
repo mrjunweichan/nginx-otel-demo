@@ -30,4 +30,3 @@ storage:
     wal:
       path: /tmp/tempo/wal
 
-search_enabled: true
