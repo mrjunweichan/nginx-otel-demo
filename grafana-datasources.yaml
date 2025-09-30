@@ -9,9 +9,6 @@ datasources:
     jsonData:
       serviceMap:
         enabled: true
-        # datasourceUid: 'prometheus'
-      nodeGraph:
-        enabled: true
 
   - name: Prometheus
     type: prometheus
