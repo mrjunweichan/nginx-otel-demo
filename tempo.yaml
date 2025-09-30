@@ -40,9 +40,3 @@ storage:
         block: true
       max_block_bytes: 104857600
       max_block_duration: 1h
-
-storage:
-  trace:
-    backend: local
-    local:
-      path: /tmp/tempo
