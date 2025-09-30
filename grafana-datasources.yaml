@@ -5,6 +5,18 @@ datasources:
     url: http://tempo:3200
     access: proxy
     isDefault: true
+    uid: tempo_datasource
     jsonData:
       serviceMap:
         enabled: true
+
+  - name: Prometheus
+    type: prometheus
+    url: http://prometheus:9090
+    access: proxy
+    isDefault: false
+    uid: prometheus_datasource
+    jsonData:
+      exemplarTraceIdDestinations:
+        - name: traceID
+          datasourceUid: tempo_datasource
