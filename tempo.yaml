@@ -1,6 +1,7 @@
 server:
   http_listen_port: 3200
   log_level: debug
+
 distributor:
   receivers:
     otlp:
@@ -21,6 +22,9 @@ metrics_generator:
     - url: http://localhost:9090/api/v1/write
     # - url: http://prometheus:9090/api/v1/write
       send_exemplars: true
+  processors:
+    - service-graphs
+    - span-metrics
 
 storage:
   trace:
