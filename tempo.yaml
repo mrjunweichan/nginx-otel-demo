@@ -21,6 +21,8 @@ metrics_generator:
     - url: http://localhost:9090/api/v1/write
     # - url: http://prometheus:9090/api/v1/write
       send_exemplars: true
+  processors:
+    - service_graphs
 
 storage:
   trace:
