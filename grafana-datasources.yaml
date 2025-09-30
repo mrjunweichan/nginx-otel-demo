@@ -19,6 +19,9 @@ datasources:
     access: proxy
     isDefault: false
     jsonData:
+      httpMethod: GET
+      serviceMap:
+        datasourceUid: 'prometheus'
       exemplarTraceIdDestinations:
         - name: traceID
           # datasourceUid: tempo
