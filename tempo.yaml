@@ -22,25 +22,6 @@ metrics_generator:
     - url: http://localhost:9090/api/v1/write 
     # - url: http://prometheus:9090/api/v1/write
       send_exemplars: true
-  processor:
-    service_graphs:
-      wait: 10s
-      max_items: 10000
-      workers: 10
-      dimensions: []
-      peer_attributes:
-        - peer.service
-        - peer.method
-      enable_client_server_prefix: false
-    span_metrics:
-      intrinsic_dimensions:
-        service: true
-        span_name: true
-        span_kind: true
-        status_code: true
-      dimensions: []
-      filter_policies: []
-      target_info_excluded_dimensions: []
 
 storage:
   trace:
