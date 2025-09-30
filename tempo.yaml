@@ -39,10 +39,6 @@ metrics_generator:
         span_kind: true
         status_code: true
       dimensions: []
-      subprocessors:
-        0: true
-        1: true
-        2: true
       filter_policies: []
       target_info_excluded_dimensions: []
 
