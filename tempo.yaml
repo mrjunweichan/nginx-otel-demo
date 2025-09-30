@@ -33,7 +33,8 @@ storage:
     wal:
       path: /tmp/tempo/wal
 
-global_overrides:
+overrides:
+  defaults:
     metrics_generator:
       processors: [service-graphs, span-metrics, local-blocks]
       generate_native_histograms: both
