@@ -1,0 +1,6 @@
+global:
+  scrape_interval: 15s
+rule_files:
+remote_write: [] 
+web:
+  enable_lifecycle: true
