@@ -29,14 +29,5 @@ storage:
       path: /tmp/tempo
     wal:
       path: /tmp/tempo/wal
-    block:
-      encoding: zstd
-      search_encoding: snappy
-      bloom_filter_false_positive_rate: 0.01
-      index_downsample_bytes: 1000
-      search_enabled: true
-    search:
-      cache_control:
-        block: true
-      max_block_bytes: 104857600
-      max_block_duration: 1h
+
+search_enabled: true
