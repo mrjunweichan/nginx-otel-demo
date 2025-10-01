@@ -16,10 +16,12 @@ processors:
         statements:
           - set(kind, "SPAN_KIND_CLIENT") where resource.attributes["service.name"] == "nginx-plus"
 exporters:
-  otlp:
-    endpoint: http://tempo:4318/v1/traces
-    tls:
-      insecure: true
+  otlphttp:
+    endpoint: http://tempo:4318
+  # otlp:
+    # endpoint: http://tempo:4318
+    # tls:
+      # insecure: true
     # protocol: http
 
 service:
