@@ -29,4 +29,4 @@ service:
     traces:
       receivers: [otlp]
       processors: [batch, transform/nginx-span-kind]
-      exporters: [otlp]
+      exporters: [otlphttp]
