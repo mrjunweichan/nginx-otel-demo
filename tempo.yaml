@@ -24,6 +24,52 @@ metrics_generator:
     # - url: http://localhost:9090/api/v1/write 
     - url: http://prometheus:9090/api/v1/write
       send_exemplars: true
+  processor:
+    service_graphs:
+      wait: 10s
+      max_items: 10000
+      workers: 10
+      histogram_bucket_seconds:
+        - 0.1
+        - 0.2
+        - 0.5
+        - 1
+        - 2
+        - 5
+      dimensions: []
+      peer_attributes:
+        - peer.service
+        - peer.method
+      enable_client_server_prefix: false
+    span_metrics:
+      histogram_bucket_seconds:
+        - 0.002
+        - 0.004
+        - 0.006
+        - 0.008
+        - 0.01
+        - 0.025
+        - 0.05
+        - 0.075
+        - 0.1
+        - 0.25
+        - 0.5
+        - 0.75
+        - 1
+      intrinsic_dimensions:
+        service: true
+        span_name: true
+        span_kind: true
+        status_code: true
+      dimensions:
+        - http.route
+        - deployment.env
+        - net.peer.ip
+        - http.request_id
+        - http.upstream_response_time
+        - custom.env
+      filter_policies: []
+      target_info_excluded_dimensions: []
 
 storage:
   trace:
@@ -33,8 +79,8 @@ storage:
     wal:
       path: /tmp/tempo/wal
 
-overrides:
-  defaults:
-    metrics_generator:
-      processors: [service-graphs, span-metrics, local-blocks]
-      generate_native_histograms: both
+# overrides:
+  # defaults:
+    # metrics_generator:
+      # processors: [service-graphs, span-metrics, local-blocks]
+      # generate_native_histograms: both
