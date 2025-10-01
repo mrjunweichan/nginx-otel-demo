@@ -13,7 +13,7 @@ resource = Resource(attributes={"service.name": "service-b"})
 trace.set_tracer_provider(TracerProvider(resource=resource))
 tracer = trace.get_tracer(__name__)
 # otlp_exporter = OTLPSpanExporter(endpoint="http://tempo:4318/v1/traces")
-otlp_exporter = OTLPSpanExporter(endpoint="http://otel-collector:4318")
+otlp_exporter = OTLPSpanExporter(endpoint="http://otel-collector:4318/v1/traces")
 span_processor = BatchSpanProcessor(otlp_exporter)
 trace.get_tracer_provider().add_span_processor(span_processor)
 
