@@ -13,7 +13,7 @@ processors:
     trace_statements:
       - context: span
         statements:
-          - set(kind, SPAN_KIND_CLIENT) where resource.attributes["service.name"] == "nginx-plus"
+          - set(kind, "SPAN_KIND_CLIENT") where resource.attributes["service.name"] == "nginx-plus"
 exporters:
   otlp:
     endpoint: tempo:4318
