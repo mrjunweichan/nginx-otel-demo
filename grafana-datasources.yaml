@@ -4,7 +4,6 @@ datasources:
     type: tempo
     uid: tempo_datasource
     url: http://tempo:3200
-    # url: http://localhost:3200
     access: proxy
     isDefault: true
     jsonData:
@@ -17,7 +16,6 @@ datasources:
     type: prometheus
     uid: prometheus_datasource
     url: http://prometheus:9090
-    # url: http://localhost:9090
     access: proxy
     isDefault: false
     jsonData:
@@ -26,6 +24,5 @@ datasources:
         datasourceUid: 'prometheus'
       exemplarTraceIdDestinations:
         - name: traceID
-          # datasourceUid: tempo
           datasourceUid: tempo_datasource
     version: 1
