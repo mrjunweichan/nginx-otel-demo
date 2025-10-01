@@ -6,8 +6,8 @@ services:
     environment:
       - OTEL_EXPORTER_OTLP_ENDPOINT=http://tempo:4318
       - OTEL_SERVICE_NAME=service-a
-      - OTEL_TRACES_EXPORTER=otlp
-      - OTEL_METRICS_EXPORTER=otlp
+      # - OTEL_TRACES_EXPORTER=otlp
+      # - OTEL_METRICS_EXPORTER=otlp
     depends_on:
       - service-b
       - tempo
@@ -23,8 +23,8 @@ services:
     environment:
       - OTEL_EXPORTER_OTLP_ENDPOINT=http://tempo:4318
       - OTEL_SERVICE_NAME=service-b
-      - OTEL_TRACES_EXPORTER=otlp
-      - OTEL_METRICS_EXPORTER=otlp
+      # - OTEL_TRACES_EXPORTER=otlp
+      # - OTEL_METRICS_EXPORTER=otlp
     depends_on:
       - tempo
     networks:
@@ -38,8 +38,8 @@ services:
       - ./tempo-data:/tmp/tempo
     ports:
       - "3200:3200"  # Tempo HTTP API
-      - "4317:4317"  # OTLP gRPC
-      - "4318:4318"  # OTLP HTTP
+      # - "4317:4317"  # OTLP gRPC
+      # - "4318:4318"  # OTLP HTTP
     networks:
       - otel-net
   
@@ -77,6 +77,19 @@ services:
       restart: unless-stopped
       networks:
         - otel-net
+
+  otel-collector:
+    image: otel/opentelemetry-collector-contrib:latest
+    container_name: otel-collector
+    volumes:
+      - ./otel-collector.yaml:/etc/otelcol-contrib/config.yaml
+    ports:
+      - "4317:4317"
+      - "4318:4318"
+    networks:
+      - otel-net
+    depends_on:
+      - tempo
 
 volumes:
   prometheus-data:
