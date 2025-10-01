@@ -23,5 +23,5 @@ service:
   pipelines:
     traces:
       receivers: [otlp]
-      processors: [batch, attributes]
+      processors: [batch, transform/nginx-span-kind]
       exporters: [otlp]
