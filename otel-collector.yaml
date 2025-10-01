@@ -9,12 +9,11 @@ processors:
   batch:
     timeout: 1s
     send_batch_size: 100
-  attributes:
-    actions:
-      - key: span.kind
-        value: CLIENT
-        action: upsert
-        pattern: service.name=nginx-plus
+  transform/nginx-span-kind:
+    trace_statements:
+      - context: span
+        statements:
+          - set(kind, SPAN_KIND_CLIENT) where resource.attributes["service.name"] == "nginx-plus"
 exporters:
   otlp:
     endpoint: tempo:4318
