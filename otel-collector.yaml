@@ -15,6 +15,8 @@ processors:
       - context: span
         statements:
           - set(kind, "SPAN_KIND_CLIENT") where resource.attributes["service.name"] == "nginx-plus"
+          - log("Transformed span for nginx-plus") where resource.attributes["service.name"] == "nginx-plus"
+
 exporters:
   otlphttp:
     endpoint: http://tempo:4318
