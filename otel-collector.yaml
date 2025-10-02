@@ -18,14 +18,14 @@ processors:
 
 exporters:
   # otlp/tempo:
-  otlphttp/tempo:
+  otlphttp:
     endpoint: http://tempo:4318
     tls:
       insecure: true
-  # otlp/jaeger:
-    # endpoint: jaeger:4317
-    # tls:
-      # insecure: true
+  otlp/jaeger:
+    endpoint: jaeger:4317
+    tls:
+      insecure: true
 
 service:
   pipelines:
@@ -33,4 +33,4 @@ service:
       receivers: [otlp]
       processors: [batch, transform/nginx-span-kind]
       # exporters: [otlp/tempo]
-      exporters: [otlphttp/tempo]
+      exporters: [otlphttp, otlp/jaeger]
