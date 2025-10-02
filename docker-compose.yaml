@@ -1,7 +1,7 @@
 services:
 
   app-payment:
-    build: ./payment
+    build: ./app
     ports:
       - "5002:5002"
     environment:
@@ -9,7 +9,8 @@ services:
       - OTEL_SERVICE_NAME=payment
       - SERVICE_PORT=5002
       - CONFIG_FILE=/app/config.json
-      - ./payment/config.json:/app/config.json:ro
+    volumes:
+      - ./app/payment/config.json:/app/payment/config.json:ro
     depends_on:
       - tempo
     networks:
