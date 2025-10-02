@@ -30,6 +30,20 @@ services:
     networks:
       - otel-net
 
+  otel-collector:
+    image: otel/opentelemetry-collector-contrib:latest
+    container_name: otel-collector
+    volumes:
+      - ./otel-collector.yaml:/etc/otelcol-contrib/config.yaml
+    ports:
+      - "4317:4317"
+      - "4318:4318"
+    networks:
+      - otel-net
+    depends_on:
+      - tempo
+      - jaeger
+
   tempo:
     image: grafana/tempo:latest
     command: ["-config.file=/etc/tempo.yaml"]
@@ -38,10 +52,12 @@ services:
       - ./tempo-data:/tmp/tempo
     ports:
       - "3200:3200"  # Tempo HTTP API
-      # - "4317:4317"  # OTLP gRPC
-      # - "4318:4318"  # OTLP HTTP
+      # - "4317:4317"  # OTLP gRPC - only for docker network
+      # - "4318:4318"  # OTLP HTTP - only for docker network
     networks:
       - otel-net
+    depends_on:
+      - prometheus
   
   grafana:
     image: grafana/grafana:latest
@@ -56,6 +72,9 @@ services:
       - tempo
     networks:
       - otel-net
+    depends_on:
+      - tempo
+      - prometheus
 
   prometheus:
       image: prom/prometheus:latest
@@ -78,18 +97,16 @@ services:
       networks:
         - otel-net
 
-  otel-collector:
-    image: otel/opentelemetry-collector-contrib:latest
-    container_name: otel-collector
-    volumes:
-      - ./otel-collector.yaml:/etc/otelcol-contrib/config.yaml
+jaeger:
+    image: jaegertracing/all-in-one:latest
     ports:
-      - "4317:4317"
-      - "4318:4318"
+      - "16686:16686"
+      # - "4317:4317"  # OTLP gRPC - only for docker network
+      # - "4318:4318"  # OTLP HTTP - only for docker network
+    environment:
+      - COLLECTOR_OTLP_ENABLED=true
     networks:
       - otel-net
-    depends_on:
-      - tempo
 
 volumes:
   prometheus-data:
