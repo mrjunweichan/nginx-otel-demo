@@ -95,16 +95,16 @@ services:
       networks:
         - otel-net
 
-jaeger:
-    image: jaegertracing/all-in-one:latest
-    ports:
-      - "16686:16686"
-      # - "4317:4317"  # OTLP gRPC - only for docker network
-      # - "4318:4318"  # OTLP HTTP - only for docker network
-    environment:
-      - COLLECTOR_OTLP_ENABLED=true
-    networks:
-      - otel-net
+  jaeger:
+      image: jaegertracing/all-in-one:latest
+      ports:
+        - "16686:16686"
+        # - "4317:4317"  # OTLP gRPC - only for docker network
+        # - "4318:4318"  # OTLP HTTP - only for docker network
+      environment:
+        - COLLECTOR_OTLP_ENABLED=true
+      networks:
+        - otel-net
 
 volumes:
   prometheus-data:
