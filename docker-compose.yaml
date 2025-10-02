@@ -68,8 +68,6 @@ services:
       - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
     volumes:
       - ./grafana-datasources.yaml:/etc/grafana/provisioning/datasources/datasources.yaml
-    depends_on:
-      - tempo
     networks:
       - otel-net
     depends_on:
