@@ -1,4 +1,17 @@
 services:
+
+  app-payment:
+    build: ./payment
+    ports:
+      - "5002:5002"
+    environment:
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://otel-collector:4318
+      - OTEL_SERVICE_NAME=payment
+    depends_on:
+      - tempo
+    networks:
+      - otel-net
+  
   service-a:
     build: ./service-a
     ports:
