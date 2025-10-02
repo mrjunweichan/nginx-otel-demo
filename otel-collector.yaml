@@ -17,8 +17,7 @@ processors:
           - set(span.kind.string, "Client") where resource.attributes["service.name"] == "nginx-plus"
 
 exporters:
-  # otlphttp:
-  oltp/tempo:
+  otlphttp:
     endpoint: http://tempo:4318
     tls:
       insecure: true
@@ -32,5 +31,4 @@ service:
     traces:
       receivers: [otlp]
       processors: [batch, transform/nginx-span-kind]
-      # exporters: [oltphttp]
-      exporters: [oltp/tempo]
+      exporters: [oltphttp]
