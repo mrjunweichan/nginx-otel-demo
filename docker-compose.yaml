@@ -7,6 +7,9 @@ services:
     environment:
       - OTEL_EXPORTER_OTLP_ENDPOINT=http://otel-collector:4318
       - OTEL_SERVICE_NAME=payment
+      - SERVICE_PORT=5002
+      - CONFIG_FILE=/app/config.json
+      - ./payment/config.json:/app/config.json:ro
     depends_on:
       - tempo
     networks:
