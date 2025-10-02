@@ -18,7 +18,7 @@ processors:
 
 exporters:
   # otlp/tempo:
-  otlphttp:
+  otlphttp/tempo:
     endpoint: http://tempo:4318
     tls:
       insecure: true
@@ -33,4 +33,4 @@ service:
       receivers: [otlp]
       processors: [batch, transform/nginx-span-kind]
       # exporters: [otlp/tempo]
-      exporters: [otlphttp]
+      exporters: [otlphttp/tempo]
