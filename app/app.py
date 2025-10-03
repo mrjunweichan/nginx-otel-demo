@@ -38,7 +38,7 @@ def initiate_transfer():
         # Internal call: /process-gateway (direct, intra-team)
         with tracer.start_as_current_span("call-process-gateway"):
             try:
-                resp = requests.get('http://payment:5002/process-gateway')
+                resp = requests.get('http://app-payment:5002/process-gateway')
                 response_text += f"Called process-gateway: {resp.text}\n"
             except requests.RequestException as e:
                 response_text += f"Error calling process-gateway: {str(e)}\n"
@@ -70,7 +70,7 @@ def process_gateway():
         # Internal call: /record-payment-history (direct, intra-team)
         with tracer.start_as_current_span("call-record-payment-history"):
             try:
-                resp = requests.get('http://payment:5002/record-payment-history')
+                resp = requests.get('http://app-payment:5002/record-payment-history')
                 response_text += f"Called record-payment-history: {resp.text}\n"
             except requests.RequestException as e:
                 response_text += f"Error calling record-payment-history: {str(e)}\n"
@@ -95,7 +95,7 @@ def settle_payment():
         # Internal call: /process-gateway (direct, intra-team)
         with tracer.start_as_current_span("call-process-gateway"):
             try:
-                resp = requests.get('http://payment:5002/process-gateway')
+                resp = requests.get('http://app-payment:5002/process-gateway')
                 response_text += f"Called process-gateway: {resp.text}\n"
             except requests.RequestException as e:
                 response_text += f"Error calling process-gateway: {str(e)}\n"
