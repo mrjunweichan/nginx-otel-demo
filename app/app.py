@@ -32,6 +32,13 @@ RequestsInstrumentor().instrument()
 @app.route('/initiate-transfer', methods=['GET', 'POST'])
 def initiate_transfer():
     with tracer.start_as_current_span("payment:initiate-transfer"):
+    with tracer.start_as_current_span(
+        "payment:initiate-transfer",
+        attributes=[
+            {"endpoint.name": "initiate-transfer"},
+            {"team": "payments"}
+        ]
+    ):
         response_text = "Response from payment at /initiate-transfer\n"
         
         # Internal call: /process-gateway (direct, intra-team)
@@ -63,7 +70,13 @@ def initiate_transfer():
 
 @app.route('/process-gateway', methods=['GET'])
 def process_gateway():
-    with tracer.start_as_current_span("payment:process-gateway"):
+    with tracer.start_as_current_span(
+        "payment:process-gateway",
+        attributes=[
+            {"endpoint.name": "process-gateway"},
+            {"team": "payments"}
+        ]
+    ):
         response_text = "Response from payment at /process-gateway\n"
         
         # Internal call: /record-payment-history (direct, intra-team)
@@ -78,17 +91,27 @@ def process_gateway():
 
 @app.route('/record-payment-history', methods=['GET'])
 def record_payment_history():
-    with tracer.start_as_current_span("payment:record-payment-history"):
+    with tracer.start_as_current_span(
+        "payment:record-payment-history",
+        attributes=[{"endpoint.name": "record-payment-history"}]
+    ):
         return "Response from payment at /record-payment-history\n"
 
 @app.route('/get-payment-status', methods=['GET'])
 def get_payment_status():
-    with tracer.start_as_current_span("payment:get-payment-status"):
+    with tracer.start_as_current_span(
+        "payment:get-payment-status",
+        attributes=[{"endpoint.name": "get-payment-status"}]
+    ):
         return "Response from payment at /get-payment-status\n"
 
 @app.route('/settle-payment', methods=['POST'])
 def settle_payment():
     with tracer.start_as_current_span("payment:settle-payment"):
+    with tracer.start_as_current_span(
+        "payment:settle-payment",
+        attributes=[{"endpoint.name": "settle-payment"}]
+    ):
         response_text = "Response from payment at /settle-payment\n"
         
         # Internal call: /process-gateway (direct, intra-team)
