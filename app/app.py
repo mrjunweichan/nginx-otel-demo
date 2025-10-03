@@ -16,7 +16,7 @@ app = Flask(__name__)
 SERVICE_NAME = os.getenv("OTEL_SERVICE_NAME", "default-service")
 OTEL_EXPORTER_ENDPOINT = os.getenv("OTEL_EXPORTER_OTLP_ENDPOINT", "http://otel-collector:4318/v1/traces")
 HOST = os.getenv("SERVICE_HOST", "0.0.0.0")
-PORT = int(os.getenv("SERVICE_PORT", "5000"))
+PORT = int(os.getenv("SERVICE_PORT", "5002"))
 
 # Set up OpenTelemetry
 resource = Resource(attributes={"service.name": SERVICE_NAME})
