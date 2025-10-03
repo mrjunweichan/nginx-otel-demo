@@ -31,7 +31,6 @@ RequestsInstrumentor().instrument()
 
 @app.route('/initiate-transfer', methods=['GET', 'POST'])
 def initiate_transfer():
-    with tracer.start_as_current_span("payment:initiate-transfer"):
     with tracer.start_as_current_span(
         "payment:initiate-transfer",
         attributes=[
@@ -107,7 +106,6 @@ def get_payment_status():
 
 @app.route('/settle-payment', methods=['POST'])
 def settle_payment():
-    with tracer.start_as_current_span("payment:settle-payment"):
     with tracer.start_as_current_span(
         "payment:settle-payment",
         attributes=[{"endpoint.name": "settle-payment"}]
