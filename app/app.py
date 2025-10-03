@@ -61,5 +61,9 @@ for route, config in ROUTES_CONFIG.items():
         route, config.get("calls", [])
     ))
 
+@app.route('/test')
+def test():
+    return f"Test route for {SERVICE_NAME}"
+
 if __name__ == "__main__":
     app.run(host=HOST, port=PORT)
