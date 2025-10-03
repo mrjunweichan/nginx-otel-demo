@@ -9,8 +9,6 @@ services:
       - OTEL_SERVICE_NAME=payment
       - SERVICE_PORT=5002
       - CONFIG_FILE=/app/config.json
-    volumes:
-      - ./app/payment/config.json:/app/payment/config.json:ro
     depends_on:
       - tempo
     networks:
