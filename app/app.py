@@ -18,7 +18,7 @@ HOST = "0.0.0.0"
 PORT = 5002
 
 # Set up OpenTelemetry
-resource = Resource(attributes={"service.name": SERVICE_NAME})
+resource = Resource(attributes={"service.name": SERVICE_NAME, "team": "payments"})
 trace.set_tracer_provider(TracerProvider(resource=resource))
 tracer = trace.get_tracer(__name__)
 otlp_exporter = OTLPSpanExporter(endpoint="http://otel-collector:4318/v1/traces")
@@ -33,10 +33,7 @@ RequestsInstrumentor().instrument()
 def initiate_transfer():
     with tracer.start_as_current_span(
         "payment:initiate-transfer",
-        attributes=[
-            {"endpoint.name": "initiate-transfer"},
-            {"team": "payments"}
-        ]
+        attributes={"endpoint.name": "initiate-transfer"}
     ):
         response_text = "Response from payment at /initiate-transfer\n"
         
@@ -71,10 +68,7 @@ def initiate_transfer():
 def process_gateway():
     with tracer.start_as_current_span(
         "payment:process-gateway",
-        attributes=[
-            {"endpoint.name": "process-gateway"},
-            {"team": "payments"}
-        ]
+        attributes={"endpoint.name": "process-gateway"}
     ):
         response_text = "Response from payment at /process-gateway\n"
         
@@ -92,7 +86,7 @@ def process_gateway():
 def record_payment_history():
     with tracer.start_as_current_span(
         "payment:record-payment-history",
-        attributes=[{"endpoint.name": "record-payment-history"}]
+        attributes={"endpoint.name": "record-payment-history"}
     ):
         return "Response from payment at /record-payment-history\n"
 
@@ -100,7 +94,7 @@ def record_payment_history():
 def get_payment_status():
     with tracer.start_as_current_span(
         "payment:get-payment-status",
-        attributes=[{"endpoint.name": "get-payment-status"}]
+        attributes={"endpoint.name": "get-payment-status"}
     ):
         return "Response from payment at /get-payment-status\n"
 
@@ -108,7 +102,7 @@ def get_payment_status():
 def settle_payment():
     with tracer.start_as_current_span(
         "payment:settle-payment",
-        attributes=[{"endpoint.name": "settle-payment"}]
+        attributes={"endpoint.name": "settle-payment"}
     ):
         response_text = "Response from payment at /settle-payment\n"
         
