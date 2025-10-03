@@ -44,13 +44,13 @@ def initiate_transfer():
                 response_text += f"Error calling process-gateway: {str(e)}\n"
         
         # Inter-team call: Accounting's /get-balance (via NGINX)
-        with tracer.start_as_current_span("call-account-balance"):
-            try:
+        # with tracer.start_as_current_span("call-account-balance"):
+            # try:
                 # resp = requests.get('http://nginx-gateway:8080/api/accounts/get-balance')
-                resp = requests.get('http://nginx-gateway:8080/api/a/')
-                response_text += f"Called account-balance: {resp.text}\n"
-            except requests.RequestException as e:
-                response_text += f"Error calling account-balance: {str(e)}\n"
+                # resp = requests.get('http://nginx-gateway:8080/api/a/')
+                # response_text += f"Called account-balance: {resp.text}\n"
+            # except requests.RequestException as e:
+                # response_text += f"Error calling account-balance: {str(e)}\n"
         
         # Inter-team call: Risk's /validate-transaction (via NGINX)
         # with tracer.start_as_current_span("call-validate-transaction"):
