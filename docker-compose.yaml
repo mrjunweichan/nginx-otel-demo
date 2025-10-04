@@ -247,8 +247,40 @@ services:
         # - "4318:4318"  # OTLP HTTP - only for docker network
       environment:
         - COLLECTOR_OTLP_ENABLED=true
+        
       networks:
         - otel-net
+
+  service-a:
+    build: ./service-a
+    ports:
+      - "6000:6000"
+    environment:
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://tempo:4318
+      - OTEL_SERVICE_NAME=service-a
+      # - OTEL_TRACES_EXPORTER=otlp
+      # - OTEL_METRICS_EXPORTER=otlp
+    depends_on:
+      - service-b
+      - tempo
+    networks:
+      - otel-net
+    extra_hosts:
+      - "nginx-gateway:10.1.1.5"
+
+  service-b:
+    build: ./service-b
+    ports:
+      - "6001:6001"
+    environment:
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://tempo:4318
+      - OTEL_SERVICE_NAME=service-b
+      # - OTEL_TRACES_EXPORTER=otlp
+      # - OTEL_METRICS_EXPORTER=otlp
+    depends_on:
+      - tempo
+    networks:
+      - otel-net
 
 volumes:
   prometheus-data:
