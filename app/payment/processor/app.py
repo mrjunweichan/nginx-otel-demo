@@ -38,7 +38,7 @@ def process_gateway():
         # Intra-team call: payments-history's /record-payment-history (direct)
         with tracer.start_as_current_span("call-record-payment-history"):
             try:
-                resp = requests.get('http://app-payments-history:5006/record-payment-history')
+                resp = requests.get('http://app-payment-history:5000/record-payment-history')
                 response_text += f"Called record-payment-history: {resp.text}\n"
             except requests.RequestException as e:
                 response_text += f"Error calling record-payment-history: {str(e)}\n"
@@ -46,7 +46,7 @@ def process_gateway():
         # Intra-team call: payments-currency's /convert-currency (direct)
         with tracer.start_as_current_span("call-convert-currency"):
             try:
-                resp = requests.get('http://app-payments-currency:5007/convert-currency')
+                resp = requests.get('http://app-payment-currency:5000/convert-currency')
                 response_text += f"Called convert-currency: {resp.text}\n"
             except requests.RequestException as e:
                 response_text += f"Error calling convert-currency: {str(e)}\n"
@@ -64,7 +64,7 @@ def settle_payment():
         # Intra-team call: /process-gateway (direct, intra-team)
         with tracer.start_as_current_span("call-process-gateway"):
             try:
-                resp = requests.get('http://app-payments-processor:5005/process-gateway')
+                resp = requests.get('http://app-payment-processor:5000/process-gateway')
                 response_text += f"Called process-gateway: {resp.text}\n"
             except requests.RequestException as e:
                 response_text += f"Error calling process-gateway: {str(e)}\n"
@@ -82,7 +82,7 @@ def refund_payment():
         # Intra-team call: payments-history's /record-payment-history (direct)
         with tracer.start_as_current_span("call-record-payment-history"):
             try:
-                resp = requests.get('http://app-payments-history:5006/record-payment-history')
+                resp = requests.get('http://app-payment-history:5000/record-payment-history')
                 response_text += f"Called record-payment-history: {resp.text}\n"
             except requests.RequestException as e:
                 response_text += f"Error calling record-payment-history: {str(e)}\n"
