@@ -1,48 +1,52 @@
 services:
 
-  app-payment:
+  app-payment-currency:
     build:
       context: ./app
       dockerfile: Dockerfile
       args: 
-        SERVICE_PATH: /
+        SERVICE_PATH: payment/currency
     ports:
-      - "5002:5002"
-    environment:
-      - OTEL_EXPORTER_OTLP_ENDPOINT=http://otel-collector:4318
-      - OTEL_SERVICE_NAME=payment
-      - SERVICE_PORT=5002
+      - "5004:5000"
     depends_on:
       - tempo
     networks:
       - otel-net
-  
-  service-a:
-    build: ./service-a
-    ports:
-      - "5000:5000"
-    environment:
-      - OTEL_EXPORTER_OTLP_ENDPOINT=http://otel-collector:4318
-      - OTEL_SERVICE_NAME=service-a
-      # - OTEL_TRACES_EXPORTER=otlp
-      # - OTEL_METRICS_EXPORTER=otlp
-    depends_on:
-      - service-b
-      - tempo
-    networks:
-      - otel-net
-    extra_hosts:
-      - "nginx-gateway:10.1.1.5"
 
-  service-b:
-    build: ./service-b
+  app-payment-orchestrator:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+      args: 
+        SERVICE_PATH: payment/orchestrator
     ports:
-      - "5001:5001"
-    environment:
-      - OTEL_EXPORTER_OTLP_ENDPOINT=http://otel-collector:4318
-      - OTEL_SERVICE_NAME=service-b
-      # - OTEL_TRACES_EXPORTER=otlp
-      # - OTEL_METRICS_EXPORTER=otlp
+      - "5005:5000"
+    depends_on:
+      - tempo
+    networks:
+      - otel-net
+
+  app-payment-history:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+      args: 
+        SERVICE_PATH: payment/history
+    ports:
+      - "5006:5000"
+    depends_on:
+      - tempo
+    networks:
+      - otel-net
+
+  app-payment-processor:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+      args: 
+        SERVICE_PATH: payment/processor
+    ports:
+      - "5007:5000"
     depends_on:
       - tempo
     networks:
@@ -124,32 +128,6 @@ services:
         - COLLECTOR_OTLP_ENABLED=true
       networks:
         - otel-net
-
-  app-payment-processor:
-    build:
-      context: ./app
-      dockerfile: Dockerfile
-      args: 
-        SERVICE_PATH: payment/processor
-    ports:
-      - "5005:5000"
-    depends_on:
-      - tempo
-    networks:
-      - otel-net
-
-  app-payment-history:
-    build:
-      context: ./app
-      dockerfile: Dockerfile
-      args: 
-        SERVICE_PATH: payment/history
-    ports:
-      - "5006:5000"
-    depends_on:
-      - tempo
-    networks:
-      - otel-net
 
 volumes:
   prometheus-data:
