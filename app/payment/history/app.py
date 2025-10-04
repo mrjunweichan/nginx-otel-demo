@@ -14,8 +14,6 @@ app = Flask(__name__)
 
 # Parameterized configuration
 SERVICE_NAME = "payments-history"
-HOST = "0.0.0.0"
-PORT = 5006
 
 # Set up OpenTelemetry
 resource = Resource(attributes={"service.name": SERVICE_NAME, "team": "payments"})
@@ -49,4 +47,4 @@ def audit_payments():
         return "Response from payments-history at /audit-payments\n"
 
 if __name__ == "__main__":
-    app.run(host=HOST, port=PORT)
+    app.run(host='0.0.0.0', port=5000)
