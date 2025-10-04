@@ -33,7 +33,6 @@ def record_payment_history():
         "payments-history:record-payment-history",
         attributes={"endpoint.name": "record-payment-history"}
     ):
-        # This endpoint doesn't call any other services (per table: "None")
         return "Response from payments-history at /record-payment-history\n"
 
 @app.route('/audit-payments', methods=['GET'])
@@ -42,8 +41,6 @@ def audit_payments():
         "payments-history:audit-payments",
         attributes={"endpoint.name": "audit-payments"}
     ):
-        # This endpoint doesn't call any other services (per table: "None")
-        # Note: Table mentions it's "called by /generate-report" - this is for reporting service to call
         return "Response from payments-history at /audit-payments\n"
 
 if __name__ == "__main__":
