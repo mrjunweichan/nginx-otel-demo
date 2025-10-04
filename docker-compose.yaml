@@ -1,7 +1,11 @@
 services:
 
   app-payment:
-    build: ./app
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+      args: 
+        SERVICE_PATH: /
     ports:
       - "5002:5002"
     environment:
@@ -120,6 +124,40 @@ services:
         - COLLECTOR_OTLP_ENABLED=true
       networks:
         - otel-net
+
+  app-payment-processor:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+      args: 
+        SERVICE_PATH: payment/processor
+    ports:
+      - "5005:5005"
+    environment:
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://otel-collector:4318
+      - OTEL_SERVICE_NAME=payment-processor
+      - SERVICE_PORT=5005
+    depends_on:
+      - tempo
+    networks:
+      - otel-net
+
+  app-payment-history:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+      args: 
+        SERVICE_PATH: payment/history
+    ports:
+      - "5006:5006"
+    environment:
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://otel-collector:4318
+      - OTEL_SERVICE_NAME=payment-history
+      - SERVICE_PORT=5006
+    depends_on:
+      - tempo
+    networks:
+      - otel-net
 
 volumes:
   prometheus-data:
