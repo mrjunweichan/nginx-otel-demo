@@ -33,17 +33,7 @@ def flag_anomaly():
         "risk-manager:flag-anomaly",
         attributes={"endpoint.name": "flag-anomaly"}
     ):
-        response_text = "Response from risk-manager at /flag-anomaly\n"
-        
-        # Intra-team call: risk-orchestrator's /generate-report (direct)
-        with tracer.start_as_current_span("call-generate-report"):
-            try:
-                resp = requests.get('http://app-risk-orchestrator:5000/generate-report')
-                response_text += f"Called generate-report: {resp.text}\n"
-            except requests.RequestException as e:
-                response_text += f"Error calling generate-report: {str(e)}\n"
-        
-        return response_text
+        return "Response from risk-manager at /flag-anomaly\n"
 
 @app.route('/review-flags', methods=['GET'])
 def review_flags():
