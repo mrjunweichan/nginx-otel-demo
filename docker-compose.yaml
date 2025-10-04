@@ -52,6 +52,45 @@ services:
     networks:
       - otel-net
 
+  app-accounting-orchestrator:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+      args: 
+        SERVICE_PATH: accounting/orchestrator
+    ports:
+      - "5005:5000"
+    depends_on:
+      - tempo
+    networks:
+      - otel-net
+
+  app-accounting-ledger:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+      args: 
+        SERVICE_PATH: accounting/ledger
+    ports:
+      - "5006:5000"
+    depends_on:
+      - tempo
+    networks:
+      - otel-net
+
+  app-accounting-history:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+      args: 
+        SERVICE_PATH: accounting/history
+    ports:
+      - "5007:5000"
+    depends_on:
+      - tempo
+    networks:
+      - otel-net
+
   otel-collector:
     image: otel/opentelemetry-collector-contrib:latest
     container_name: otel-collector
