@@ -133,10 +133,6 @@ services:
         SERVICE_PATH: payment/processor
     ports:
       - "5005:5000"
-    # environment:
-      # - OTEL_EXPORTER_OTLP_ENDPOINT=http://otel-collector:4318
-      # - OTEL_SERVICE_NAME=payment-processor
-      # - SERVICE_PORT=5005
     depends_on:
       - tempo
     networks:
@@ -150,10 +146,6 @@ services:
         SERVICE_PATH: payment/history
     ports:
       - "5006:5000"
-    # environment:
-      # - OTEL_EXPORTER_OTLP_ENDPOINT=http://otel-collector:4318
-      # - OTEL_SERVICE_NAME=payment-history
-      # - SERVICE_PORT=5006
     depends_on:
       - tempo
     networks:
