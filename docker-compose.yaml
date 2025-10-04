@@ -256,8 +256,8 @@ services:
     ports:
       - "6000:6000"
     environment:
-      - OTEL_EXPORTER_OTLP_ENDPOINT=http://tempo:4318
-      - OTEL_SERVICE_NAME=service-a
+      # - OTEL_EXPORTER_OTLP_ENDPOINT=http://tempo:4318
+      # - OTEL_SERVICE_NAME=service-a
       # - OTEL_TRACES_EXPORTER=otlp
       # - OTEL_METRICS_EXPORTER=otlp
     depends_on:
@@ -273,8 +273,8 @@ services:
     ports:
       - "6001:6001"
     environment:
-      - OTEL_EXPORTER_OTLP_ENDPOINT=http://tempo:4318
-      - OTEL_SERVICE_NAME=service-b
+      # - OTEL_EXPORTER_OTLP_ENDPOINT=http://tempo:4318
+      # - OTEL_SERVICE_NAME=service-b
       # - OTEL_TRACES_EXPORTER=otlp
       # - OTEL_METRICS_EXPORTER=otlp
     depends_on:
