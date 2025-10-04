@@ -91,6 +91,45 @@ services:
     networks:
       - otel-net
 
+  app-risk-orchestrator:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+      args: 
+        SERVICE_PATH: risk/orchestrator
+    ports:
+      - "5008:5000"
+    depends_on:
+      - tempo
+    networks:
+      - otel-net
+
+  app-risk-analyzer:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+      args: 
+        SERVICE_PATH: risk/analyzer
+    ports:
+      - "5009:5000"
+    depends_on:
+      - tempo
+    networks:
+      - otel-net
+
+  app-risk-manager:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+      args: 
+        SERVICE_PATH: risk/manager
+    ports:
+      - "5010:5000"
+    depends_on:
+      - tempo
+    networks:
+      - otel-net
+
   otel-collector:
     image: otel/opentelemetry-collector-contrib:latest
     container_name: otel-collector
