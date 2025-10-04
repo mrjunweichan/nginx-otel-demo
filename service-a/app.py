@@ -26,8 +26,8 @@ RequestsInstrumentor().instrument()
 @app.route('/')
 def hello():
     with tracer.start_as_current_span("call-service-b"):
-        response = requests.get('http://service-b:5001/')  # Call Service B
+        response = requests.get('http://service-b:6001/')  # Call Service B
         return f"Hello from Service A!\nResponse from B: {response.text}"
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='0.0.0.0', port=6000)
