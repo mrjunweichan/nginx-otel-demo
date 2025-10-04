@@ -130,6 +130,45 @@ services:
     networks:
       - otel-net
 
+  app-customer-orchestrator:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+      args: 
+        SERVICE_PATH: customer/orchestrator
+    ports:
+      - "5011:5000"
+    depends_on:
+      - tempo
+    networks:
+      - otel-net
+
+  app-customer-verifier:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+      args: 
+        SERVICE_PATH: customer/verifier
+    ports:
+      - "5012:5000"
+    depends_on:
+      - tempo
+    networks:
+      - otel-net
+
+  app-customer-profile-manager:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+      args: 
+        SERVICE_PATH: customer/profile-manager
+    ports:
+      - "5013:5000"
+    depends_on:
+      - tempo
+    networks:
+      - otel-net
+
   otel-collector:
     image: otel/opentelemetry-collector-contrib:latest
     container_name: otel-collector
