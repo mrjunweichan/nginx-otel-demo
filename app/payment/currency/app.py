@@ -33,7 +33,6 @@ def convert_currency():
         "payments-currency:convert-currency",
         attributes={"endpoint.name": "convert-currency"}
     ):
-        # This endpoint doesn't call any other services (per table: "None")
         return "Response from payments-currency at /convert-currency\n"
 
 @app.route('/get-exchange-rates', methods=['GET'])
@@ -42,7 +41,6 @@ def get_exchange_rates():
         "payments-currency:get-exchange-rates",
         attributes={"endpoint.name": "get-exchange-rates"}
     ):
-        # This endpoint doesn't call any other services (per table: "None")
         return "Response from payments-currency at /get-exchange-rates\n"
 
 if __name__ == "__main__":
