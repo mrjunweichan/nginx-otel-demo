@@ -38,7 +38,8 @@ def initiate_transfer():
         # Inter-team call: Account Management's /get-balance (via NGINX)
         with tracer.start_as_current_span("call-account-get-balance"):
             try:
-                resp = requests.get('http://nginx-gateway:8080/api/accounting/ledger/get-balance')
+                # resp = requests.get('http://nginx-gateway:8080/api/accounting/ledger/get-balance')
+                resp = requests.get('http://app-accounting-ledger:5000/get-balance') # To view graph
                 response_text += f"Called get-balance: {resp.text}\n"
             except requests.RequestException as e:
                 response_text += f"Error calling get-balance: {str(e)}\n"
@@ -46,7 +47,8 @@ def initiate_transfer():
         # Inter-team call: Risk's /validate-transaction (via NGINX)
         with tracer.start_as_current_span("call-risk-validate-transaction"):
             try:
-                resp = requests.get('http://nginx-gateway:8080/api/risk/orchestrator/validate-transaction')
+                # resp = requests.get('http://nginx-gateway:8080/api/risk/orchestrator/validate-transaction')
+                resp = requests.get('http://app-risk-orchestrator:5000/validate-transaction') # To view graph
                 response_text += f"Called validate-transaction: {resp.text}\n"
             except requests.RequestException as e:
                 response_text += f"Error calling validate-transaction: {str(e)}\n"
