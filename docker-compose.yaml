@@ -66,6 +66,8 @@ services:
       - tempo
     networks:
       - otel-net
+    extra_hosts:
+      - "nginx-gateway:10.1.1.5"
 
   app-accounting-ledger:
     build:
@@ -79,8 +81,6 @@ services:
       - tempo
     networks:
       - otel-net
-    extra_hosts:
-      - "nginx-gateway:10.1.1.5"
 
   app-accounting-history:
     build:
