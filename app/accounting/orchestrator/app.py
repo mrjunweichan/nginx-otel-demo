@@ -38,7 +38,8 @@ def create_account():
         # Inter-team call: Customer's /get-profile (via NGINX)
         with tracer.start_as_current_span("call-customer-get-profile"):
             try:
-                resp = requests.get('http://nginx-gateway:8080/api/customer/orchestrator/get-profile')
+                # resp = requests.get('http://nginx-gateway:8080/api/customer/orchestrator/get-profile')
+                resp = requests.get('http://app-customer-orchestrator:5000/get-profile') # To view graph
                 response_text += f"Called get-profile: {resp.text}\n"
             except requests.RequestException as e:
                 response_text += f"Error calling get-profile: {str(e)}\n"
