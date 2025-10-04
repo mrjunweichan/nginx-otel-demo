@@ -255,7 +255,7 @@ services:
     build: ./service-a
     ports:
       - "6000:6000"
-    environment:
+    # environment:
       # - OTEL_EXPORTER_OTLP_ENDPOINT=http://tempo:4318
       # - OTEL_SERVICE_NAME=service-a
       # - OTEL_TRACES_EXPORTER=otlp
@@ -272,7 +272,7 @@ services:
     build: ./service-b
     ports:
       - "6001:6001"
-    environment:
+    # environment:
       # - OTEL_EXPORTER_OTLP_ENDPOINT=http://tempo:4318
       # - OTEL_SERVICE_NAME=service-b
       # - OTEL_TRACES_EXPORTER=otlp
