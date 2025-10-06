@@ -13,15 +13,14 @@ from opentelemetry.sdk.resources import Resource
 app = Flask(__name__)
 
 # Parameterized configuration
-SERVICE_NAME = "payments-currency"
+SERVICE_NAME = os.getenv("OTEL_SERVICE_NAME")# "payments-currency"
+OTLP_ENDPOINT = os.getenv("OTEL_EXPORTER_OTLP_ENDPOINT")
 
 # Set up OpenTelemetry
 resource = Resource(attributes={"service.name": SERVICE_NAME, "team": "payments"})
 trace.set_tracer_provider(TracerProvider(resource=resource))
 tracer = trace.get_tracer(__name__)
-#otlp_exporter = OTLPSpanExporter(endpoint="http://otel-collector:4318/v1/traces")
-otlp_endpoint = os.getenv("OTEL_EXPORTER_OTLP_ENDPOINT")
-otlp_exporter = OTLPSpanExporter(endpoint=otlp_endpoint)
+otlp_exporter = OTLPSpanExporter(endpoint=OTLP_ENDPOINT)
 span_processor = BatchSpanProcessor(otlp_exporter)
 trace.get_tracer_provider().add_span_processor(span_processor)
 
