@@ -1,0 +1,180 @@
+services:
+
+  app-payment-currency:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+      args: 
+        SERVICE_PATH: payment/currency
+    ports:
+      - "5001:5000"
+    environment:
+      - OTEL_EXPORTER_OTLP_ENDPOINT=${OTEL_EXPORTER_OTLP_ENDPOINT}
+    depends_on:
+      - tempo
+    networks:
+      - otel-net
+
+  app-payment-orchestrator:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+      args: 
+        SERVICE_PATH: payment/orchestrator
+    ports:
+      - "5002:5000"
+    depends_on:
+      - tempo
+    networks:
+      - otel-net
+    extra_hosts:
+      - "nginx-gateway:10.1.1.5"
+
+  app-payment-history:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+      args: 
+        SERVICE_PATH: payment/history
+    ports:
+      - "5003:5000"
+    depends_on:
+      - tempo
+    networks:
+      - otel-net
+
+  app-payment-processor:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+      args: 
+        SERVICE_PATH: payment/processor
+    ports:
+      - "5004:5000"
+    depends_on:
+      - tempo
+    networks:
+      - otel-net
+
+  app-accounting-orchestrator:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+      args: 
+        SERVICE_PATH: accounting/orchestrator
+    ports:
+      - "5005:5000"
+    depends_on:
+      - tempo
+    networks:
+      - otel-net
+    extra_hosts:
+      - "nginx-gateway:10.1.1.5"
+
+  app-accounting-ledger:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+      args: 
+        SERVICE_PATH: accounting/ledger
+    ports:
+      - "5006:5000"
+    depends_on:
+      - tempo
+    networks:
+      - otel-net
+
+  app-accounting-history:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+      args: 
+        SERVICE_PATH: accounting/history
+    ports:
+      - "5007:5000"
+    depends_on:
+      - tempo
+    networks:
+      - otel-net
+
+  app-risk-orchestrator:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+      args: 
+        SERVICE_PATH: risk/orchestrator
+    ports:
+      - "5008:5000"
+    depends_on:
+      - tempo
+    networks:
+      - otel-net
+
+  app-risk-analyzer:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+      args: 
+        SERVICE_PATH: risk/analyzer
+    ports:
+      - "5009:5000"
+    depends_on:
+      - tempo
+    networks:
+      - otel-net
+
+  app-risk-manager:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+      args: 
+        SERVICE_PATH: risk/manager
+    ports:
+      - "5010:5000"
+    depends_on:
+      - tempo
+    networks:
+      - otel-net
+
+  app-customer-orchestrator:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+      args: 
+        SERVICE_PATH: customer/orchestrator
+    ports:
+      - "5011:5000"
+    depends_on:
+      - tempo
+    networks:
+      - otel-net
+
+  app-customer-verifier:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+      args: 
+        SERVICE_PATH: customer/verifier
+    ports:
+      - "5012:5000"
+    depends_on:
+      - tempo
+    networks:
+      - otel-net
+
+  app-customer-profile-manager:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+      args: 
+        SERVICE_PATH: customer/profile-manager
+    ports:
+      - "5013:5000"
+    depends_on:
+      - tempo
+    networks:
+      - otel-net
+        
+networks:
+  otel-net:
+    driver: bridge
