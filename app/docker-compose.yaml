@@ -2,7 +2,7 @@ services:
 
   app-payment-currency:
     build:
-      context: ./app
+      context: .
       dockerfile: Dockerfile
       args: 
         SERVICE_PATH: payment/currency
@@ -10,25 +10,23 @@ services:
       - "5001:5000"
     environment:
       - OTEL_EXPORTER_OTLP_ENDPOINT=${OTEL_EXPORTER_OTLP_ENDPOINT}
-    depends_on:
-      - tempo
     networks:
       - otel-net
 
   app-payment-orchestrator:
     build:
-      context: ./app
+      context: .
       dockerfile: Dockerfile
       args: 
         SERVICE_PATH: payment/orchestrator
     ports:
       - "5002:5000"
-    depends_on:
-      - tempo
+    environment:
+      - OTEL_EXPORTER_OTLP_ENDPOINT=${OTEL_EXPORTER_OTLP_ENDPOINT}
     networks:
       - otel-net
     extra_hosts:
-      - "nginx-gateway:10.1.1.5"
+      - "nginx-gateway:${NGINX_GATEWAY_IP}"
 
   app-payment-history:
     build:
@@ -38,8 +36,8 @@ services:
         SERVICE_PATH: payment/history
     ports:
       - "5003:5000"
-    depends_on:
-      - tempo
+    environment:
+      - OTEL_EXPORTER_OTLP_ENDPOINT=${OTEL_EXPORTER_OTLP_ENDPOINT}
     networks:
       - otel-net
 
@@ -51,8 +49,8 @@ services:
         SERVICE_PATH: payment/processor
     ports:
       - "5004:5000"
-    depends_on:
-      - tempo
+    environment:
+      - OTEL_EXPORTER_OTLP_ENDPOINT=${OTEL_EXPORTER_OTLP_ENDPOINT}
     networks:
       - otel-net
 
@@ -64,12 +62,12 @@ services:
         SERVICE_PATH: accounting/orchestrator
     ports:
       - "5005:5000"
-    depends_on:
-      - tempo
+    environment:
+      - OTEL_EXPORTER_OTLP_ENDPOINT=${OTEL_EXPORTER_OTLP_ENDPOINT}
     networks:
       - otel-net
     extra_hosts:
-      - "nginx-gateway:10.1.1.5"
+      - "nginx-gateway:${NGINX_GATEWAY_IP}"
 
   app-accounting-ledger:
     build:
@@ -79,8 +77,8 @@ services:
         SERVICE_PATH: accounting/ledger
     ports:
       - "5006:5000"
-    depends_on:
-      - tempo
+    environment:
+      - OTEL_EXPORTER_OTLP_ENDPOINT=${OTEL_EXPORTER_OTLP_ENDPOINT}
     networks:
       - otel-net
 
@@ -92,8 +90,8 @@ services:
         SERVICE_PATH: accounting/history
     ports:
       - "5007:5000"
-    depends_on:
-      - tempo
+    environment:
+      - OTEL_EXPORTER_OTLP_ENDPOINT=${OTEL_EXPORTER_OTLP_ENDPOINT}
     networks:
       - otel-net
 
@@ -105,8 +103,8 @@ services:
         SERVICE_PATH: risk/orchestrator
     ports:
       - "5008:5000"
-    depends_on:
-      - tempo
+    environment:
+      - OTEL_EXPORTER_OTLP_ENDPOINT=${OTEL_EXPORTER_OTLP_ENDPOINT}
     networks:
       - otel-net
 
@@ -118,8 +116,8 @@ services:
         SERVICE_PATH: risk/analyzer
     ports:
       - "5009:5000"
-    depends_on:
-      - tempo
+    environment:
+      - OTEL_EXPORTER_OTLP_ENDPOINT=${OTEL_EXPORTER_OTLP_ENDPOINT}
     networks:
       - otel-net
 
@@ -131,8 +129,8 @@ services:
         SERVICE_PATH: risk/manager
     ports:
       - "5010:5000"
-    depends_on:
-      - tempo
+    environment:
+      - OTEL_EXPORTER_OTLP_ENDPOINT=${OTEL_EXPORTER_OTLP_ENDPOINT}
     networks:
       - otel-net
 
@@ -144,8 +142,8 @@ services:
         SERVICE_PATH: customer/orchestrator
     ports:
       - "5011:5000"
-    depends_on:
-      - tempo
+    environment:
+      - OTEL_EXPORTER_OTLP_ENDPOINT=${OTEL_EXPORTER_OTLP_ENDPOINT}
     networks:
       - otel-net
 
@@ -157,11 +155,11 @@ services:
         SERVICE_PATH: customer/verifier
     ports:
       - "5012:5000"
-    depends_on:
-      - tempo
+    environment:
+      - OTEL_EXPORTER_OTLP_ENDPOINT=${OTEL_EXPORTER_OTLP_ENDPOINT}
     networks:
       - otel-net
-
+  
   app-customer-profile-manager:
     build:
       context: ./app
@@ -170,8 +168,8 @@ services:
         SERVICE_PATH: customer/profile-manager
     ports:
       - "5013:5000"
-    depends_on:
-      - tempo
+    environment:
+      - OTEL_EXPORTER_OTLP_ENDPOINT=${OTEL_EXPORTER_OTLP_ENDPOINT}
     networks:
       - otel-net
         
