@@ -19,8 +19,7 @@ services:
     command: ["-config.file=/etc/tempo.yaml"]
     volumes:
       - ./tempo.yaml:/etc/tempo.yaml
-      - tempo-data:/tmp/tempo
-    user: "0.0"
+      - ./tempo-data:/tmp/tempo
     ports:
       - "3200:3200"  # Tempo HTTP API
       # - "4317:4317"  # OTLP gRPC - only for docker network
@@ -80,7 +79,6 @@ services:
         - otel-net
 
 volumes:
-  tempo-data:
   prometheus-data:
 
 networks:
