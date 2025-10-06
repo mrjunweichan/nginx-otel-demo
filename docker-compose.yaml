@@ -10,7 +10,6 @@ services:
       - "5001:5000"
     environment:
       - OTEL_EXPORTER_OTLP_ENDPOINT=${OTEL_EXPORTER_OTLP_ENDPOINT}
-      - OTEL_SERVICE_NAME=payments-currency
     depends_on:
       - tempo
     networks:
