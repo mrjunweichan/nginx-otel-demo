@@ -13,7 +13,7 @@ from opentelemetry.sdk.resources import Resource
 app = Flask(__name__)
 
 # Parameterized configuration
-SERVICE_NAME = os.getenv("OTEL_SERVICE_NAME")# "payments-currency"
+SERVICE_NAME = "payments-currency"
 OTLP_ENDPOINT = os.getenv("OTEL_EXPORTER_OTLP_ENDPOINT")
 
 # Set up OpenTelemetry
