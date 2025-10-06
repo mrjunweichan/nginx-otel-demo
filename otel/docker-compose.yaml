@@ -79,6 +79,7 @@ services:
         - otel-net
 
 volumes:
+  tempo-data:
   prometheus-data:
 
 networks:
