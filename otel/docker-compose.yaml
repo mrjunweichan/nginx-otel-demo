@@ -20,6 +20,7 @@ services:
     volumes:
       - ./tempo.yaml:/etc/tempo.yaml
       - ./tempo-data:/tmp/tempo
+      - ./tempo-wal:/tmp/tempo/wal
     ports:
       - "3200:3200"  # Tempo HTTP API
       # - "4317:4317"  # OTLP gRPC - only for docker network
