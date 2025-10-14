@@ -3,7 +3,4 @@ locust -f /mnt/locust/locustfile.py &
 
 sleep 5
 
-curl -X POST \
-  -F "user_count=50" \
-  -F "spawn_rate=10" \
-  http://localhost:8089/swarm
+python3 -c "import requests; requests.post('http://localhost:8089/swarm', data={'user_count': 50, 'spawn_rate': 10})"
