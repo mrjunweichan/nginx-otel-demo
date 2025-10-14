@@ -86,7 +86,7 @@ services:
         - ./locustfile.py:/mnt/locust/locustfile.py
       command: -f /mnt/locust/locustfile.py --worker --master-host=locust-master
       environment:
-        - LOCUST_HOST=http://${NGINX_GATEWAY_IP}:80
+        - LOCUST_HOST=http://${NGINX_GATEWAY_IP_PORT}
       networks:
         - otel-net
 
