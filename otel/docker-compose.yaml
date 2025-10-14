@@ -4,7 +4,7 @@ services:
     image: otel/opentelemetry-collector-contrib:latest
     container_name: otel-collector
     volumes:
-      - ./otel-collector.yaml:/etc/otelcol-contrib/config.yaml
+      - ./collector/otel-collector.yaml:/etc/otelcol-contrib/config.yaml
     ports:
       - "4317:4317"
       - "4318:4318"
@@ -18,7 +18,7 @@ services:
     image: grafana/tempo:latest
     command: ["-config.file=/etc/tempo.yaml"]
     volumes:
-      - ./tempo.yaml:/etc/tempo.yaml
+      - ./tempo/tempo.yaml:/etc/tempo.yaml
       - ./tempo-data:/tmp/tempo
     ports:
       - "3200:3200"  # Tempo HTTP API
@@ -37,8 +37,8 @@ services:
       - GF_AUTH_ANONYMOUS_ENABLED=true
       - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
     volumes:
-      - ./grafana-datasources.yaml:/etc/grafana/provisioning/datasources/datasources.yaml
-      - ./provisioning/dashboards:/etc/grafana/provisioning/dashboards
+      - ./grafana/grafana-datasources.yaml:/etc/grafana/provisioning/datasources/datasources.yaml
+      - ./grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards
     networks:
       - otel-net
     depends_on:
@@ -49,7 +49,7 @@ services:
       image: prom/prometheus:latest
       container_name: prometheus
       volumes:
-        - ./prometheus.yaml:/etc/prometheus/prometheus.yml
+        - ./prometheus/prometheus.yaml:/etc/prometheus/prometheus.yml
         - prometheus-data:/prometheus
       ports:
         - "9090:9090"
@@ -85,7 +85,9 @@ services:
       ports:
         - "8089:8089"
       volumes:
-        - ./locustfile.py:/mnt/locust/locustfile.py
+        - ./locust/locustfile.py:/mnt/locust/locustfile.py
+        - ./locust/start-locust.sh:/mnt/locust/start-locust.sh
+      entrypoint: ["/mnt/locust/start-locust.sh"]
       command: >
         -f /mnt/locust/locustfile.py
         --headless
