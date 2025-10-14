@@ -79,20 +79,15 @@ services:
       networks:
         - otel-net
 
-  locust-master:
+  locust:
       image: locustio/locust:latest
-      container_name: locust-master
+      container_name: locust
       ports:
         - "8089:8089"
       volumes:
         - ./locust/locustfile.py:/mnt/locust/locustfile.py
         - ./locust/start-locust.sh:/mnt/locust/start-locust.sh
       entrypoint: ["/mnt/locust/start-locust.sh"]
-      command: >
-        -f /mnt/locust/locustfile.py
-        --headless
-        --users 50
-        --spawn-rate 10
       environment:
         - LOCUST_HOST=http://${NGINX_GATEWAY_IP_PORT}
       networks:
