@@ -38,6 +38,7 @@ services:
       - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
     volumes:
       - ./grafana-datasources.yaml:/etc/grafana/provisioning/datasources/datasources.yaml
+      # - ./provisioning/dashboards:/etc/grafana/provisioning/dashboards
     networks:
       - otel-net
     depends_on:
