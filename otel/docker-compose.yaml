@@ -19,7 +19,7 @@ services:
     command: ["-config.file=/etc/tempo.yaml"]
     volumes:
       - ./tempo/tempo.yaml:/etc/tempo.yaml
-      - ./tempo-data:/tmp/tempo
+      - ./tempo/tempo-data:/tmp/tempo
     ports:
       - "3200:3200"  # Tempo HTTP API
       # - "4317:4317"  # OTLP gRPC - only for docker network
@@ -50,7 +50,7 @@ services:
       container_name: prometheus
       volumes:
         - ./prometheus/prometheus.yaml:/etc/prometheus/prometheus.yml
-        - prometheus-data:/prometheus
+        - prometheus/prometheus-data:/prometheus
       ports:
         - "9090:9090"
       command:
