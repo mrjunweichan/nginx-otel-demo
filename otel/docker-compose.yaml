@@ -16,11 +16,10 @@ services:
 
   tempo:
     image: grafana/tempo:latest
-    user: "10001:10001"
     command: ["-config.file=/etc/tempo.yaml"]
     volumes:
       - ./tempo/tempo.yaml:/etc/tempo.yaml
-      - tempo-data:/tmp/tempo
+      - ./tempo/tempo-data:/tmp/tempo
     ports:
       - "3200:3200"  # Tempo HTTP API
       # - "4317:4317"  # OTLP gRPC - only for docker network
@@ -96,7 +95,6 @@ services:
 
 volumes:
   prometheus-data: {}
-  tempo-data: {}
 
 networks:
   otel-net:
