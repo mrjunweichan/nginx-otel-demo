@@ -79,6 +79,17 @@ services:
       networks:
         - otel-net
 
+  locust-master:
+      image: locustio/locust:latest
+      container_name: locust-master
+      volumes:
+        - ./locustfile.py:/mnt/locust/locustfile.py
+      command: -f /mnt/locust/locustfile.py --worker --master-host=locust-master
+      environment:
+        - LOCUST_HOST=http://${NGINX_GATEWAY_IP}:80
+      networks:
+        - otel-net
+
 volumes:
   prometheus-data:
 
