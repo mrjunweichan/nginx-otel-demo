@@ -64,7 +64,6 @@ def get_random_ip():
 
 
 class PaymentsUser(HttpUser):
-    """Simulates users interacting with payments microservices via NGINX."""
     wait_times = between(1, 4)
     weight = 3
 
@@ -165,7 +164,6 @@ class AccountingUser(HttpUser):
 
 
 class RiskUser(HttpUser):
-    """Simulates users interacting with risk microservices."""
     wait_times = between(2, 6)
     weight = 1
 
@@ -211,7 +209,6 @@ class RiskUser(HttpUser):
 
 
 class CustomerUser(HttpUser):
-    """Simulates users interacting with customer microservices."""
     wait_times = between(1, 5)
     weight = 2
 
@@ -249,8 +246,3 @@ class CustomerUser(HttpUser):
     def search_profiles(self):
         headers = {"X-Forwarded-For": get_random_ip()}
         self.client.get(ENDPOINTS["customer"]["search_profiles"], headers=headers)
-
-
-
-    
-
