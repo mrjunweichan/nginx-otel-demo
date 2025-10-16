@@ -92,6 +92,9 @@ services:
         - LOCUST_HOST=http://${NGINX_GATEWAY_IP_PORT}
       networks:
         - otel-net
+      depends_on:
+        - tempo
+        - prometheus
 
 volumes:
   prometheus-data: {}
