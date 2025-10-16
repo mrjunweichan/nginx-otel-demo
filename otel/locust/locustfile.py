@@ -64,7 +64,7 @@ def get_random_ip():
 
 
 class PaymentsUser(HttpUser):
-    wait_times = between(1, 4)
+    wait_times = between(5, 10)
     weight = 3
 
     @task(3)
@@ -119,7 +119,7 @@ class PaymentsUser(HttpUser):
 
 
 class AccountingUser(HttpUser):
-    wait_times = between(1, 5)
+    wait_times = between(10, 25)
     weight = 2
 
     @task(2)
@@ -164,7 +164,7 @@ class AccountingUser(HttpUser):
 
 
 class RiskUser(HttpUser):
-    wait_times = between(2, 6)
+    wait_times = between(5, 15)
     weight = 1
 
     @task(2)
@@ -209,7 +209,7 @@ class RiskUser(HttpUser):
 
 
 class CustomerUser(HttpUser):
-    wait_times = between(1, 5)
+    wait_times = between(10, 15)
     weight = 2
 
     @task(2)
