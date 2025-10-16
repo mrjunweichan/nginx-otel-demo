@@ -12,7 +12,7 @@ services:
       - otel-net
     depends_on:
       - tempo
-      - jaeger
+      # - jaeger
 
   tempo:
     image: grafana/tempo:latest
