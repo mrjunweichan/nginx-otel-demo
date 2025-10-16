@@ -11,7 +11,7 @@ chmod -R 775 otel/tempo/tempo-data/
 
 # optional
 chmod +x otel/update-app.sh
-chmod +x otel/update-app.sh
+chmod +x app/update-app.sh
 ```
 
 If creating in own environment, update the following files:
