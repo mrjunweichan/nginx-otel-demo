@@ -64,185 +64,94 @@ def get_random_ip():
 
 
 class PaymentsUser(HttpUser):
-    wait_times = between(5, 10)
+    wait_time = between(5, 10)
     weight = 3
 
-    @task(3)
-    def convert_currency(self):
+    @task
+    def random_payment_task(self):
+        endpoints = [
+            ("get", "/api/payments/currency/convert-currency"),
+            ("get", "/api/payments/currency/get-exchange-rates"),
+            ("get", "/api/payments/orchestrator/initiate-transfer"),
+            ("get", "/api/payments/orchestrator/get-payment-status"),
+            ("post", "/api/payments/orchestrator/cancel-transfer"),
+            ("get", "/api/payments/history/record-payment-history"),
+            ("get", "/api/payments/history/audit-payments"),
+            ("get", "/api/payments/processor/process-gateway"),
+            ("post", "/api/payments/processor/settle-payment"),
+            ("post", "/api/payments/processor/refund-payment"),
+        ]
+        method, url = random.choice(endpoints)
         headers = {"X-Forwarded-For": get_random_ip()}
-        self.client.get(ENDPOINTS["payments"]["convert_currency"], headers=headers)
-
-    @task(3)
-    def get_exchange_rates(self):
-        headers = {"X-Forwarded-For": get_random_ip()}
-        self.client.get(ENDPOINTS["payments"]["get_exchange_rates"], headers=headers)
-
-    @task(2)
-    def initiate_transfer(self):
-        headers = {"X-Forwarded-For": get_random_ip()}
-        self.client.get(ENDPOINTS["payments"]["initiate_transfer"], headers=headers)
-
-    @task(2)
-    def get_payment_status(self):
-        headers = {"X-Forwarded-For": get_random_ip()}
-        self.client.get(ENDPOINTS["payments"]["get_payment_status"], headers=headers)
-
-    @task(1)
-    def cancel_transfer(self):
-        headers = {"X-Forwarded-For": get_random_ip()}
-        self.client.post(ENDPOINTS["payments"]["cancel_transfer"], headers=headers)
-
-    @task(2)
-    def record_payment_history(self):
-        headers = {"X-Forwarded-For": get_random_ip()}
-        self.client.get(ENDPOINTS["payments"]["record_payment_history"], headers=headers)
-
-    @task(1)
-    def audit_payments(self):
-        headers = {"X-Forwarded-For": get_random_ip()}
-        self.client.get(ENDPOINTS["payments"]["audit_payments"], headers=headers)
-
-    @task(2)
-    def process_gateway(self):
-        headers = {"X-Forwarded-For": get_random_ip()}
-        self.client.get(ENDPOINTS["payments"]["process_gateway"], headers=headers)
-
-    @task(1)
-    def settle_payment(self):
-        headers = {"X-Forwarded-For": get_random_ip()}
-        self.client.post(ENDPOINTS["payments"]["settle_payment"], headers=headers)
-
-    @task(1)
-    def refund_payment(self):
-        headers = {"X-Forwarded-For": get_random_ip()}
-        self.client.post(ENDPOINTS["payments"]["refund_payment"], headers=headers)
-
+        if method == "get":
+            self.client.get(url, headers=headers)
+        elif method == "post":
+            self.client.post(url, headers=headers)
 
 class AccountingUser(HttpUser):
-    wait_times = between(10, 25)
+    wait_time = between(10, 25)
     weight = 2
 
-    @task(2)
-    def create_account(self):
+    @task
+    def random_accounting_task(self):
+        endpoints = [
+            ("get", "/api/accounting/orchestrator/create-account"),
+            ("post", "/api/accounting/orchestrator/close-account"),
+            ("get", "/api/accounting/ledger/init-ledger"),
+            ("get", "/api/accounting/ledger/get-balance"),
+            ("get", "/api/accounting/ledger/log-transaction-history"),
+            ("post", "/api/accounting/ledger/reconcile-ledger"),
+            ("get", "/api/accounting/history/list-transactions"),
+            ("get", "/api/accounting/history/export-transactions"),
+        ]
+        method, url = random.choice(endpoints)
         headers = {"X-Forwarded-For": get_random_ip()}
-        self.client.get(ENDPOINTS["accounting"]["create_account"], headers=headers)
-
-    @task(1)
-    def close_account(self):
-        headers = {"X-Forwarded-For": get_random_ip()}
-        self.client.post(ENDPOINTS["accounting"]["close_account"], headers=headers)
-
-    @task(2)
-    def init_ledger(self):
-        headers = {"X-Forwarded-For": get_random_ip()}
-        self.client.get(ENDPOINTS["accounting"]["init_ledger"], headers=headers)
-
-    @task(3)
-    def get_balance(self):
-        headers = {"X-Forwarded-For": get_random_ip()}
-        self.client.get(ENDPOINTS["accounting"]["get_balance"], headers=headers)
-
-    @task(2)
-    def log_transaction_history(self):
-        headers = {"X-Forwarded-For": get_random_ip()}
-        self.client.get(ENDPOINTS["accounting"]["log_transaction_history"], headers=headers)
-
-    @task(1)
-    def reconcile_ledger(self):
-        headers = {"X-Forwarded-For": get_random_ip()}
-        self.client.post(ENDPOINTS["accounting"]["reconcile_ledger"], headers=headers)
-
-    @task(2)
-    def list_transactions(self):
-        headers = {"X-Forwarded-For": get_random_ip()}
-        self.client.get(ENDPOINTS["accounting"]["list_transactions"], headers=headers)
-
-    @task(1)
-    def export_transactions(self):
-        headers = {"X-Forwarded-For": get_random_ip()}
-        self.client.get(ENDPOINTS["accounting"]["export_transactions"], headers=headers)
-
+        if method == "get":
+            self.client.get(url, headers=headers)
+        elif method == "post":
+            self.client.post(url, headers=headers)
 
 class RiskUser(HttpUser):
-    wait_times = between(5, 15)
+    wait_time = between(5, 15)
     weight = 1
 
-    @task(2)
-    def validate_transaction(self):
+    @task
+    def random_risk_task(self):
+        endpoints = [
+            ("get", "/api/risk/orchestrator/validate-transaction"),
+            ("get", "/api/risk/orchestrator/generate-report"),
+            ("post", "/api/risk/orchestrator/block-transaction"),
+            ("get", "/api/risk/analyzer/check-fraud"),
+            ("get", "/api/risk/analyzer/screen-aml"),
+            ("get", "/api/risk/analyzer/score-risk"),
+            ("get", "/api/risk/manager/flag-anomaly"),
+            ("get", "/api/risk/manager/review-flags"),
+        ]
+        method, url = random.choice(endpoints)
         headers = {"X-Forwarded-For": get_random_ip()}
-        self.client.get(ENDPOINTS["risk"]["validate_transaction"], headers=headers)
-
-    @task(1)
-    def generate_report(self):
-        headers = {"X-Forwarded-For": get_random_ip()}
-        self.client.get(ENDPOINTS["risk"]["generate_report"], headers=headers)
-
-    @task(1)
-    def block_transaction(self):
-        headers = {"X-Forwarded-For": get_random_ip()}
-        self.client.post(ENDPOINTS["risk"]["block_transaction"], headers=headers)
-
-    @task(2)
-    def check_fraud(self):
-        headers = {"X-Forwarded-For": get_random_ip()}
-        self.client.get(ENDPOINTS["risk"]["check_fraud"], headers=headers)
-
-    @task(2)
-    def screen_aml(self):
-        headers = {"X-Forwarded-For": get_random_ip()}
-        self.client.get(ENDPOINTS["risk"]["screen_aml"], headers=headers)
-
-    @task(2)
-    def score_risk(self):
-        headers = {"X-Forwarded-For": get_random_ip()}
-        self.client.get(ENDPOINTS["risk"]["score_risk"], headers=headers)
-
-    @task(1)
-    def flag_anomaly(self):
-        headers = {"X-Forwarded-For": get_random_ip()}
-        self.client.get(ENDPOINTS["risk"]["flag_anomaly"], headers=headers)
-
-    @task(1)
-    def review_flags(self):
-        headers = {"X-Forwarded-For": get_random_ip()}
-        self.client.get(ENDPOINTS["risk"]["review_flags"], headers=headers)
-
+        if method == "get":
+            self.client.get(url, headers=headers)
+        elif method == "post":
+            self.client.post(url, headers=headers)
 
 class CustomerUser(HttpUser):
-    wait_times = between(10, 15)
+    wait_time = between(10, 15)
     weight = 2
 
-    @task(2)
-    def register_user(self):
+    @task
+    def random_customer_task(self):
+        endpoints = [
+            ("get", "/api/customer/orchestrator/register-user"),
+            ("get", "/api/customer/orchestrator/get-profile"),
+            ("get", "/api/customer/verifier/verify-kyc"),
+            ("get", "/api/customer/verifier/generate-auth-token"),
+            ("post", "/api/customer/verifier/notify-registration"),
+            ("post", "/api/customer/profile-manager/update-profile"),
+            ("get", "/api/customer/profile-manager/search-profiles"),
+        ]
+        method, url = random.choice(endpoints)
         headers = {"X-Forwarded-For": get_random_ip()}
-        self.client.get(ENDPOINTS["customer"]["register_user"], headers=headers)
-
-    @task(2)
-    def get_profile(self):
-        headers = {"X-Forwarded-For": get_random_ip()}
-        self.client.get(ENDPOINTS["customer"]["get_profile"], headers=headers)
-
-    @task(2)
-    def verify_kyc(self):
-        headers = {"X-Forwarded-For": get_random_ip()}
-        self.client.get(ENDPOINTS["customer"]["verify_kyc"], headers=headers)
-
-    @task(1)
-    def generate_auth_token(self):
-        headers = {"X-Forwarded-For": get_random_ip()}
-        self.client.get(ENDPOINTS["customer"]["generate_auth_token"], headers=headers)
-
-    @task(1)
-    def notify_registration(self):
-        headers = {"X-Forwarded-For": get_random_ip()}
-        self.client.post(ENDPOINTS["customer"]["notify_registration"], headers=headers)
-
-    @task(1)
-    def update_profile(self):
-        headers = {"X-Forwarded-For": get_random_ip()}
-        self.client.post(ENDPOINTS["customer"]["update_profile"], headers=headers)
-
-    @task(2)
-    def search_profiles(self):
-        headers = {"X-Forwarded-For": get_random_ip()}
-        self.client.get(ENDPOINTS["customer"]["search_profiles"], headers=headers)
+        if method == "get":
+            self.client.get(url, headers=headers)
+        elif method == "post":
+            self.client.post(url, headers=headers)
