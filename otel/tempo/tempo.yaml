@@ -31,6 +31,8 @@ storage:
       path: /tmp/tempo
     wal:
       path: /tmp/tempo/wal
+    block:
+      retention_period: 3h
 
 overrides:
   defaults:
