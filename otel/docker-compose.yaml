@@ -75,7 +75,10 @@ services:
 #         # - "4318:4318"  # OTLP HTTP - only for docker network
 #       environment:
 #         - COLLECTOR_OTLP_ENABLED=true
-#         
+#       deploy:
+#         resources:
+#           limits:
+#             memory: 256M
 #       networks:
 #         - otel-net
 
