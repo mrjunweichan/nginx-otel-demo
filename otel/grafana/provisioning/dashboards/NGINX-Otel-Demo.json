@@ -86,7 +86,7 @@
                 "color": {
                   "fixed": "dark-green"
                 },
-                "opacity": 0.4,
+                "opacity": 0.3,
                 "rotation": {
                   "fixed": 0,
                   "max": 360,
@@ -116,10 +116,8 @@
               }
             },
             "location": {
-              "gazetteer": "public/build/gazetteer/countries.json",
               "latitude": "Latitude",
               "longitude": "Longitude",
-              "lookup": "client.geo.country.name",
               "mode": "coords"
             },
             "name": "Clients",
@@ -132,12 +130,7 @@
         },
         "view": {
           "allLayers": true,
-          "id": "fit",
-          "lat": 0,
-          "lon": 0,
-          "noRepeat": false,
-          "shared": false,
-          "zoom": 15
+          "id": "fit"
         }
       },
       "pluginVersion": "12.2.0",
@@ -173,20 +166,6 @@
           }
         },
         {
-          "id": "renameByRegex",
-          "options": {
-            "regex": "client.geo.country.name",
-            "renamePattern": "Name"
-          }
-        },
-        {
-          "id": "renameByRegex",
-          "options": {
-            "regex": "client.geo.city",
-            "renamePattern": "City"
-          }
-        },
-        {
           "id": "convertFieldType",
           "options": {
             "conversions": [
@@ -205,6 +184,13 @@
         {
           "id": "renameByRegex",
           "options": {
+            "regex": "client.geo.country.name",
+            "renamePattern": "Name"
+          }
+        },
+        {
+          "id": "renameByRegex",
+          "options": {
             "regex": "client.geo.lat",
             "renamePattern": "Latitude"
           }
@@ -214,46 +200,6 @@
           "options": {
             "regex": "client.geo.lon",
             "renamePattern": "Longitude"
-          }
-        },
-        {
-          "id": "groupBy",
-          "options": {
-            "fields": {
-              "City": {
-                "aggregations": [],
-                "operation": "groupby"
-              },
-              "Country": {
-                "aggregations": [],
-                "operation": "groupby"
-              },
-              "Country Name": {
-                "aggregations": [
-                  "count"
-                ],
-                "operation": "groupby"
-              },
-              "Duration": {
-                "aggregations": [
-                  "max"
-                ]
-              },
-              "Latitude": {
-                "aggregations": [],
-                "operation": "groupby"
-              },
-              "Longitude": {
-                "aggregations": [],
-                "operation": "groupby"
-              },
-              "Name": {
-                "aggregations": [
-                  "count"
-                ],
-                "operation": "groupby"
-              }
-            }
           }
         }
       ],
