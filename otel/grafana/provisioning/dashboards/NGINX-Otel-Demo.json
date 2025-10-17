@@ -23,12 +23,249 @@
   "links": [],
   "panels": [
     {
+      "datasource": {
+        "type": "tempo",
+        "uid": "tempo_datasource"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 15,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 34,
+      "options": {
+        "basemap": {
+          "config": {},
+          "name": "Layer 0",
+          "noRepeat": false,
+          "type": "default"
+        },
+        "controls": {
+          "mouseWheelZoom": true,
+          "showAttribution": true,
+          "showDebug": false,
+          "showMeasure": false,
+          "showScale": false,
+          "showZoom": true
+        },
+        "layers": [
+          {
+            "config": {
+              "showLegend": true,
+              "style": {
+                "color": {
+                  "fixed": "dark-green"
+                },
+                "opacity": 0.4,
+                "rotation": {
+                  "fixed": 0,
+                  "max": 360,
+                  "min": -360,
+                  "mode": "mod"
+                },
+                "size": {
+                  "fixed": 5,
+                  "max": 15,
+                  "min": 2
+                },
+                "symbol": {
+                  "fixed": "build/img/icons/marker/circle.svg",
+                  "mode": "fixed"
+                },
+                "symbolAlign": {
+                  "horizontal": "center",
+                  "vertical": "center"
+                },
+                "textConfig": {
+                  "fontSize": 12,
+                  "offsetX": 0,
+                  "offsetY": 0,
+                  "textAlign": "center",
+                  "textBaseline": "middle"
+                }
+              }
+            },
+            "location": {
+              "gazetteer": "public/build/gazetteer/countries.json",
+              "latitude": "Latitude",
+              "longitude": "Longitude",
+              "lookup": "client.geo.country.name",
+              "mode": "coords"
+            },
+            "name": "Clients",
+            "tooltip": true,
+            "type": "markers"
+          }
+        ],
+        "tooltip": {
+          "mode": "details"
+        },
+        "view": {
+          "allLayers": true,
+          "id": "fit",
+          "lat": 0,
+          "lon": 0,
+          "noRepeat": false,
+          "shared": false,
+          "zoom": 15
+        }
+      },
+      "pluginVersion": "12.2.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "tempo",
+            "uid": "tempo_datasource"
+          },
+          "limit": 100,
+          "metricsQueryType": "range",
+          "query": "{span.client.geo.country.name != \"\" && span.client.geo.lat != \"\" && span.client.geo.lon != \"\"}",
+          "queryType": "traceql",
+          "refId": "A",
+          "serviceMapUseNativeHistograms": true,
+          "tableType": "spans"
+        }
+      ],
+      "title": "Geomap",
+      "transformations": [
+        {
+          "id": "filterFieldsByName",
+          "options": {
+            "byVariable": false,
+            "include": {
+              "names": [
+                "client.geo.country.name",
+                "client.geo.lat",
+                "client.geo.lon",
+                "Duration"
+              ]
+            }
+          }
+        },
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "client.geo.country.name",
+            "renamePattern": "Name"
+          }
+        },
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "client.geo.city",
+            "renamePattern": "City"
+          }
+        },
+        {
+          "id": "convertFieldType",
+          "options": {
+            "conversions": [
+              {
+                "destinationType": "number",
+                "targetField": "client.geo.lat"
+              },
+              {
+                "destinationType": "number",
+                "targetField": "client.geo.lon"
+              }
+            ],
+            "fields": {}
+          }
+        },
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "client.geo.lat",
+            "renamePattern": "Latitude"
+          }
+        },
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "client.geo.lon",
+            "renamePattern": "Longitude"
+          }
+        },
+        {
+          "id": "groupBy",
+          "options": {
+            "fields": {
+              "City": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "Country": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "Country Name": {
+                "aggregations": [
+                  "count"
+                ],
+                "operation": "groupby"
+              },
+              "Duration": {
+                "aggregations": [
+                  "max"
+                ]
+              },
+              "Latitude": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "Longitude": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "Name": {
+                "aggregations": [
+                  "count"
+                ],
+                "operation": "groupby"
+              }
+            }
+          }
+        }
+      ],
+      "type": "geomap"
+    },
+    {
       "collapsed": false,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 0
+        "y": 15
       },
       "id": 33,
       "panels": [],
@@ -137,7 +374,7 @@
         "h": 9,
         "w": 24,
         "x": 0,
-        "y": 1
+        "y": 16
       },
       "id": 31,
       "options": {
@@ -172,7 +409,7 @@
         "h": 15,
         "w": 24,
         "x": 0,
-        "y": 10
+        "y": 25
       },
       "id": 32,
       "options": {
@@ -186,7 +423,7 @@
         {
           "limit": 50,
           "metricsQueryType": "range",
-          "queryType": "serviceMap",
+          "queryType": "traceql",
           "refId": "A",
           "serviceMapUseNativeHistograms": true,
           "tableType": "traces"
@@ -201,7 +438,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 25
+        "y": 40
       },
       "id": 6,
       "panels": [],
@@ -275,7 +512,7 @@
         "h": 12,
         "w": 17,
         "x": 0,
-        "y": 26
+        "y": 41
       },
       "id": 15,
       "options": {
@@ -347,7 +584,7 @@
         "h": 3,
         "w": 7,
         "x": 17,
-        "y": 26
+        "y": 41
       },
       "id": 27,
       "options": {
@@ -408,7 +645,7 @@
         "h": 3,
         "w": 7,
         "x": 17,
-        "y": 29
+        "y": 44
       },
       "id": 29,
       "options": {
@@ -469,7 +706,7 @@
         "h": 3,
         "w": 7,
         "x": 17,
-        "y": 32
+        "y": 47
       },
       "id": 30,
       "options": {
@@ -530,7 +767,7 @@
         "h": 3,
         "w": 7,
         "x": 17,
-        "y": 35
+        "y": 50
       },
       "id": 28,
       "options": {
@@ -634,7 +871,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 38
+        "y": 53
       },
       "id": 20,
       "options": {
@@ -736,7 +973,7 @@
         "h": 7,
         "w": 12,
         "x": 0,
-        "y": 46
+        "y": 61
       },
       "id": 10,
       "options": {
@@ -850,7 +1087,7 @@
         "h": 7,
         "w": 12,
         "x": 12,
-        "y": 46
+        "y": 61
       },
       "id": 12,
       "options": {
@@ -961,7 +1198,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 53
+        "y": 68
       },
       "id": 22,
       "options": {
@@ -1061,7 +1298,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 61
+        "y": 76
       },
       "id": 24,
       "options": {
@@ -1160,7 +1397,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 61
+        "y": 76
       },
       "id": 23,
       "options": {
