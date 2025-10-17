@@ -23,6 +23,19 @@
   "links": [],
   "panels": [
     {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 33,
+      "panels": [],
+      "title": "OpenTelemetry",
+      "type": "row"
+    },
+    {
       "datasource": {
         "type": "tempo",
         "uid": "tempo_datasource"
@@ -54,13 +67,26 @@
             ]
           }
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Ave Latency (ms)"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "dtdurationms"
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 15,
         "w": 24,
         "x": 0,
-        "y": 0
+        "y": 1
       },
       "id": 34,
       "options": {
@@ -86,7 +112,7 @@
                 "color": {
                   "fixed": "dark-green"
                 },
-                "opacity": 0.3,
+                "opacity": 0.6,
                 "rotation": {
                   "fixed": 0,
                   "max": 360,
@@ -94,17 +120,22 @@
                   "mode": "mod"
                 },
                 "size": {
-                  "fixed": 5,
+                  "fixed": 15,
                   "max": 15,
                   "min": 2
                 },
                 "symbol": {
-                  "fixed": "build/img/icons/marker/circle.svg",
+                  "fixed": "img/icons/unicons/circle.svg",
                   "mode": "fixed"
                 },
                 "symbolAlign": {
                   "horizontal": "center",
                   "vertical": "center"
+                },
+                "text": {
+                  "field": "Country Name",
+                  "fixed": "",
+                  "mode": "field"
                 },
                 "textConfig": {
                   "fontSize": 12,
@@ -120,7 +151,7 @@
               "longitude": "Longitude",
               "mode": "coords"
             },
-            "name": "Clients",
+            "name": "Clients-Mark",
             "tooltip": true,
             "type": "markers"
           }
@@ -130,7 +161,11 @@
         },
         "view": {
           "allLayers": true,
-          "id": "fit"
+          "id": "fit",
+          "lat": 0,
+          "lon": 0,
+          "noRepeat": false,
+          "zoom": 1
         }
       },
       "pluginVersion": "12.2.0",
@@ -140,9 +175,9 @@
             "type": "tempo",
             "uid": "tempo_datasource"
           },
-          "limit": 100,
+          "limit": 1000,
           "metricsQueryType": "range",
-          "query": "{span.client.geo.country.name != \"\" && span.client.geo.lat != \"\" && span.client.geo.lon != \"\"}",
+          "query": "{span.client.geo.country.name != \"\" && span.client.geo.lat != \"\" && span.client.geo.lon != \"\" && span.http.client_ip != \"\" && span.client.geo.city != \"\"}",
           "queryType": "traceql",
           "refId": "A",
           "serviceMapUseNativeHistograms": true,
@@ -160,7 +195,9 @@
                 "client.geo.country.name",
                 "client.geo.lat",
                 "client.geo.lon",
-                "Duration"
+                "Duration",
+                "client.geo.city",
+                "http.client_ip"
               ]
             }
           }
@@ -182,41 +219,128 @@
           }
         },
         {
-          "id": "renameByRegex",
+          "id": "groupBy",
           "options": {
-            "regex": "client.geo.country.name",
-            "renamePattern": "Name"
+            "fields": {
+              "Average Latency": {
+                "aggregations": [
+                  "max"
+                ],
+                "operation": "aggregate"
+              },
+              "City": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "Client IP": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "Country Name": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "Duration": {
+                "aggregations": [
+                  "mean"
+                ],
+                "operation": "aggregate"
+              },
+              "Latitude": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "Longitude": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "client.geo.city": {
+                "aggregations": [
+                  "count"
+                ],
+                "operation": "groupby"
+              },
+              "client.geo.country.name": {
+                "aggregations": [
+                  "count"
+                ],
+                "operation": "groupby"
+              },
+              "client.geo.lat": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "client.geo.lon": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "http.client_ip": {
+                "aggregations": [],
+                "operation": "groupby"
+              }
+            }
           }
         },
         {
-          "id": "renameByRegex",
+          "id": "calculateField",
           "options": {
-            "regex": "client.geo.lat",
-            "renamePattern": "Latitude"
+            "alias": "Ave Latency (ms)",
+            "binary": {
+              "left": {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Duration (mean)"
+                }
+              },
+              "operator": "/",
+              "right": {
+                "fixed": "1000000"
+              }
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            },
+            "replaceFields": false
           }
         },
         {
-          "id": "renameByRegex",
+          "id": "organize",
           "options": {
-            "regex": "client.geo.lon",
-            "renamePattern": "Longitude"
+            "excludeByName": {
+              "Duration (mean)": true,
+              "client.geo.country.name (count)": true
+            },
+            "includeByName": {},
+            "indexByName": {
+              "Duration": 5,
+              "client.geo.city": 2,
+              "client.geo.country.name": 1,
+              "client.geo.lat": 3,
+              "client.geo.lon": 4,
+              "http.client_ip": 0
+            },
+            "orderBy": [],
+            "orderByMode": "manual",
+            "renameByName": {
+              "Ave Latency (ms)": "Ave Latency (ms)",
+              "Duration": "Average Latency",
+              "Duration (max)": "Max Latency",
+              "Duration (mean)": "Latency (Ave)",
+              "Latitude": "Latitude",
+              "Longitude": "Longitude",
+              "Name": "Name",
+              "client.geo.city": "City",
+              "client.geo.city (count)": "Request Count",
+              "client.geo.country.name": "Country Name",
+              "client.geo.lat": "Latitude",
+              "client.geo.lon": "Longitude",
+              "http.client_ip": "Client IP"
+            }
           }
         }
       ],
       "type": "geomap"
-    },
-    {
-      "collapsed": false,
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 15
-      },
-      "id": 33,
-      "panels": [],
-      "title": "OpenTelemetry",
-      "type": "row"
     },
     {
       "datasource": {
