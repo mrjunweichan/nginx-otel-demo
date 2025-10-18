@@ -429,13 +429,12 @@
             },
             "includeByName": {},
             "indexByName": {
-              "Duration (max)": 5,
-              "Max Latency (ms)": 6,
+              "Duration": 5,
               "client.geo.city": 2,
-              "client.geo.country.name": 0,
+              "client.geo.country.name": 1,
               "client.geo.lat": 3,
               "client.geo.lon": 4,
-              "http.client_ip": 1
+              "http.client_ip": 0
             },
             "renameByName": {
               "Duration (max)": "",
