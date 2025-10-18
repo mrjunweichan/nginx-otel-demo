@@ -46,313 +46,6 @@
             "mode": "thresholds"
           },
           "custom": {
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Ave Latency (ms)"
-            },
-            "properties": [
-              {
-                "id": "unit",
-                "value": "dtdurationms"
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 15,
-        "w": 24,
-        "x": 0,
-        "y": 1
-      },
-      "id": 34,
-      "options": {
-        "basemap": {
-          "config": {},
-          "name": "Layer 0",
-          "noRepeat": false,
-          "type": "default"
-        },
-        "controls": {
-          "mouseWheelZoom": true,
-          "showAttribution": true,
-          "showDebug": false,
-          "showMeasure": false,
-          "showScale": false,
-          "showZoom": true
-        },
-        "layers": [
-          {
-            "config": {
-              "showLegend": true,
-              "style": {
-                "color": {
-                  "fixed": "dark-green"
-                },
-                "opacity": 0.6,
-                "rotation": {
-                  "fixed": 0,
-                  "max": 360,
-                  "min": -360,
-                  "mode": "mod"
-                },
-                "size": {
-                  "fixed": 15,
-                  "max": 15,
-                  "min": 2
-                },
-                "symbol": {
-                  "fixed": "img/icons/unicons/circle.svg",
-                  "mode": "fixed"
-                },
-                "symbolAlign": {
-                  "horizontal": "center",
-                  "vertical": "center"
-                },
-                "text": {
-                  "field": "Country Name",
-                  "fixed": "",
-                  "mode": "field"
-                },
-                "textConfig": {
-                  "fontSize": 12,
-                  "offsetX": 0,
-                  "offsetY": 0,
-                  "textAlign": "center",
-                  "textBaseline": "middle"
-                }
-              }
-            },
-            "location": {
-              "latitude": "Latitude",
-              "longitude": "Longitude",
-              "mode": "coords"
-            },
-            "name": "Clients-Mark",
-            "tooltip": true,
-            "type": "markers"
-          }
-        ],
-        "tooltip": {
-          "mode": "details"
-        },
-        "view": {
-          "allLayers": true,
-          "id": "fit",
-          "lat": 0,
-          "lon": 0,
-          "noRepeat": false,
-          "zoom": 1
-        }
-      },
-      "pluginVersion": "12.2.0",
-      "targets": [
-        {
-          "datasource": {
-            "type": "tempo",
-            "uid": "tempo_datasource"
-          },
-          "limit": 1000,
-          "metricsQueryType": "range",
-          "query": "{span.client.geo.country.name != \"\" && span.client.geo.lat != \"\" && span.client.geo.lon != \"\" && span.http.client_ip != \"\" && span.client.geo.city != \"\"}",
-          "queryType": "traceql",
-          "refId": "A",
-          "serviceMapUseNativeHistograms": true,
-          "tableType": "spans"
-        }
-      ],
-      "title": "Geomap",
-      "transformations": [
-        {
-          "id": "filterFieldsByName",
-          "options": {
-            "byVariable": false,
-            "include": {
-              "names": [
-                "client.geo.country.name",
-                "client.geo.lat",
-                "client.geo.lon",
-                "Duration",
-                "client.geo.city",
-                "http.client_ip"
-              ]
-            }
-          }
-        },
-        {
-          "id": "convertFieldType",
-          "options": {
-            "conversions": [
-              {
-                "destinationType": "number",
-                "targetField": "client.geo.lat"
-              },
-              {
-                "destinationType": "number",
-                "targetField": "client.geo.lon"
-              }
-            ],
-            "fields": {}
-          }
-        },
-        {
-          "id": "groupBy",
-          "options": {
-            "fields": {
-              "Average Latency": {
-                "aggregations": [
-                  "max"
-                ],
-                "operation": "aggregate"
-              },
-              "City": {
-                "aggregations": [],
-                "operation": "groupby"
-              },
-              "Client IP": {
-                "aggregations": [],
-                "operation": "groupby"
-              },
-              "Country Name": {
-                "aggregations": [],
-                "operation": "groupby"
-              },
-              "Duration": {
-                "aggregations": [
-                  "mean"
-                ],
-                "operation": "aggregate"
-              },
-              "Latitude": {
-                "aggregations": [],
-                "operation": "groupby"
-              },
-              "Longitude": {
-                "aggregations": [],
-                "operation": "groupby"
-              },
-              "client.geo.city": {
-                "aggregations": [
-                  "count"
-                ],
-                "operation": "groupby"
-              },
-              "client.geo.country.name": {
-                "aggregations": [
-                  "count"
-                ],
-                "operation": "groupby"
-              },
-              "client.geo.lat": {
-                "aggregations": [],
-                "operation": "groupby"
-              },
-              "client.geo.lon": {
-                "aggregations": [],
-                "operation": "groupby"
-              },
-              "http.client_ip": {
-                "aggregations": [],
-                "operation": "groupby"
-              }
-            }
-          }
-        },
-        {
-          "id": "calculateField",
-          "options": {
-            "alias": "Ave Latency (ms)",
-            "binary": {
-              "left": {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Duration (mean)"
-                }
-              },
-              "operator": "/",
-              "right": {
-                "fixed": "1000000"
-              }
-            },
-            "mode": "binary",
-            "reduce": {
-              "reducer": "sum"
-            },
-            "replaceFields": false
-          }
-        },
-        {
-          "id": "organize",
-          "options": {
-            "excludeByName": {
-              "Duration (mean)": true,
-              "client.geo.country.name (count)": true
-            },
-            "includeByName": {},
-            "indexByName": {
-              "Duration": 5,
-              "client.geo.city": 2,
-              "client.geo.country.name": 1,
-              "client.geo.lat": 3,
-              "client.geo.lon": 4,
-              "http.client_ip": 0
-            },
-            "orderBy": [],
-            "orderByMode": "manual",
-            "renameByName": {
-              "Ave Latency (ms)": "Ave Latency (ms)",
-              "Duration": "Average Latency",
-              "Duration (max)": "Max Latency",
-              "Duration (mean)": "Latency (Ave)",
-              "Latitude": "Latitude",
-              "Longitude": "Longitude",
-              "Name": "Name",
-              "client.geo.city": "City",
-              "client.geo.city (count)": "Request Count",
-              "client.geo.country.name": "Country Name",
-              "client.geo.lat": "Latitude",
-              "client.geo.lon": "Longitude",
-              "http.client_ip": "Client IP"
-            }
-          }
-        }
-      ],
-      "type": "geomap"
-    },
-    {
-      "datasource": {
-        "type": "tempo",
-        "uid": "tempo_datasource"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "custom": {
             "align": "auto",
             "cellOptions": {
               "type": "auto"
@@ -444,7 +137,7 @@
         "h": 9,
         "w": 24,
         "x": 0,
-        "y": 16
+        "y": 1
       },
       "id": 31,
       "options": {
@@ -476,10 +169,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 15,
-        "w": 24,
+        "h": 16,
+        "w": 11,
         "x": 0,
-        "y": 25
+        "y": 10
       },
       "id": 32,
       "options": {
@@ -493,7 +186,7 @@
         {
           "limit": 50,
           "metricsQueryType": "range",
-          "queryType": "traceql",
+          "queryType": "serviceMap",
           "refId": "A",
           "serviceMapUseNativeHistograms": true,
           "tableType": "traces"
@@ -503,12 +196,268 @@
       "type": "nodeGraph"
     },
     {
+      "datasource": {
+        "type": "tempo",
+        "uid": "tempo_datasource"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 16,
+        "w": 13,
+        "x": 11,
+        "y": 10
+      },
+      "id": 34,
+      "options": {
+        "basemap": {
+          "config": {},
+          "name": "Layer 0",
+          "noRepeat": false,
+          "type": "default"
+        },
+        "controls": {
+          "mouseWheelZoom": true,
+          "showAttribution": true,
+          "showDebug": false,
+          "showMeasure": false,
+          "showScale": false,
+          "showZoom": true
+        },
+        "layers": [
+          {
+            "config": {
+              "showLegend": true,
+              "style": {
+                "color": {
+                  "fixed": "dark-green"
+                },
+                "opacity": 0.6,
+                "rotation": {
+                  "field": "Max Latency (ms)",
+                  "fixed": 20,
+                  "max": 360,
+                  "min": -360,
+                  "mode": "mod"
+                },
+                "size": {
+                  "fixed": 15,
+                  "max": 15,
+                  "min": 2
+                },
+                "symbol": {
+                  "fixed": "img/icons/unicons/circle.svg",
+                  "mode": "fixed"
+                },
+                "symbolAlign": {
+                  "horizontal": "center",
+                  "vertical": "center"
+                },
+                "text": {
+                  "field": "Country",
+                  "fixed": "",
+                  "mode": "field"
+                },
+                "textConfig": {
+                  "fontSize": 12,
+                  "offsetX": 0,
+                  "offsetY": 0,
+                  "textAlign": "center",
+                  "textBaseline": "middle"
+                }
+              }
+            },
+            "location": {
+              "latitude": "Latitude",
+              "longitude": "Longitude",
+              "mode": "coords"
+            },
+            "name": "Clients",
+            "tooltip": true,
+            "type": "markers"
+          }
+        ],
+        "tooltip": {
+          "mode": "details"
+        },
+        "view": {
+          "allLayers": true,
+          "id": "fit",
+          "lat": 0,
+          "lon": 0,
+          "noRepeat": false,
+          "zoom": 1
+        }
+      },
+      "pluginVersion": "12.2.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "tempo",
+            "uid": "tempo_datasource"
+          },
+          "limit": 100,
+          "metricsQueryType": "range",
+          "query": "{\n\tspan.client.geo.country.name != \"\" && \n\tspan.client.geo.city != \"\" &&\n\tspan.client.geo.lat != \"\" && \n\tspan.client.geo.lon != \"\" && \n\tspan.http.client_ip != \"\"\n}",
+          "queryType": "traceql",
+          "refId": "A",
+          "serviceMapUseNativeHistograms": true,
+          "tableType": "spans"
+        }
+      ],
+      "title": "Geomap",
+      "transformations": [
+        {
+          "id": "filterFieldsByName",
+          "options": {
+            "byVariable": false,
+            "include": {
+              "names": [
+                "client.geo.country.name",
+                "client.geo.lat",
+                "client.geo.lon",
+                "Duration",
+                "client.geo.city",
+                "http.client_ip"
+              ]
+            }
+          }
+        },
+        {
+          "id": "groupBy",
+          "options": {
+            "fields": {
+              "Duration": {
+                "aggregations": [
+                  "max"
+                ],
+                "operation": "aggregate"
+              },
+              "client.geo.city": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "client.geo.country.name": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "client.geo.lat": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "client.geo.lon": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "http.client_ip": {
+                "aggregations": [],
+                "operation": "groupby"
+              }
+            }
+          }
+        },
+        {
+          "id": "convertFieldType",
+          "options": {
+            "conversions": [
+              {
+                "destinationType": "number",
+                "targetField": "client.geo.lat"
+              },
+              {
+                "destinationType": "number",
+                "targetField": "client.geo.lon"
+              }
+            ],
+            "fields": {}
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Max Latency (ms)",
+            "binary": {
+              "left": {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Duration (max)"
+                }
+              },
+              "operator": "/",
+              "right": {
+                "fixed": "1000000"
+              }
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            }
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Duration (max)": true
+            },
+            "includeByName": {},
+            "indexByName": {
+              "Duration (max)": 5,
+              "Max Latency (ms)": 6,
+              "client.geo.city": 2,
+              "client.geo.country.name": 0,
+              "client.geo.lat": 3,
+              "client.geo.lon": 4,
+              "http.client_ip": 1
+            },
+            "renameByName": {
+              "Duration (max)": "",
+              "Max Latency (ms)": "Max Latency (ms)",
+              "client.geo.city": "City",
+              "client.geo.country.name": "Country",
+              "client.geo.lat": "Latitude",
+              "client.geo.lon": "Longitude",
+              "http.client_ip": "Client IP"
+            }
+          }
+        }
+      ],
+      "type": "geomap"
+    },
+    {
       "collapsed": false,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 40
+        "y": 26
       },
       "id": 6,
       "panels": [],
@@ -582,7 +531,7 @@
         "h": 12,
         "w": 17,
         "x": 0,
-        "y": 41
+        "y": 27
       },
       "id": 15,
       "options": {
@@ -654,7 +603,7 @@
         "h": 3,
         "w": 7,
         "x": 17,
-        "y": 41
+        "y": 27
       },
       "id": 27,
       "options": {
@@ -715,7 +664,7 @@
         "h": 3,
         "w": 7,
         "x": 17,
-        "y": 44
+        "y": 30
       },
       "id": 29,
       "options": {
@@ -764,67 +713,6 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "orange",
-                "value": 0
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 3,
-        "w": 7,
-        "x": 17,
-        "y": 47
-      },
-      "id": 30,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "percentChangeColorMode": "standard",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showPercentChange": false,
-        "textMode": "auto",
-        "wideLayout": true
-      },
-      "pluginVersion": "12.2.0",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus_datasource"
-          },
-          "expr": "sum(increase(nginxplus_upstream_server_responses{code=\"4xx\"}[1h]))",
-          "interval": "",
-          "legendFormat": "",
-          "refId": "A"
-        }
-      ],
-      "title": "Total (4XX from upstream) requests in last hour",
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "prometheus_datasource"
-      },
-      "description": "",
-      "fieldConfig": {
-        "defaults": {
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
                 "color": "red",
                 "value": 0
               }
@@ -837,7 +725,7 @@
         "h": 3,
         "w": 7,
         "x": 17,
-        "y": 50
+        "y": 33
       },
       "id": 28,
       "options": {
@@ -871,6 +759,67 @@
         }
       ],
       "title": "Total (5XX from upstream) requests in last hour",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus_datasource"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "orange",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 7,
+        "x": 17,
+        "y": 36
+      },
+      "id": 30,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.2.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus_datasource"
+          },
+          "expr": "sum(increase(nginxplus_upstream_server_responses{code=\"4xx\"}[1h]))",
+          "interval": "",
+          "legendFormat": "",
+          "refId": "A"
+        }
+      ],
+      "title": "Total (4XX from upstream) requests in last hour",
       "type": "stat"
     },
     {
@@ -941,7 +890,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 53
+        "y": 39
       },
       "id": 20,
       "options": {
@@ -1043,7 +992,7 @@
         "h": 7,
         "w": 12,
         "x": 0,
-        "y": 61
+        "y": 47
       },
       "id": 10,
       "options": {
@@ -1157,7 +1106,7 @@
         "h": 7,
         "w": 12,
         "x": 12,
-        "y": 61
+        "y": 47
       },
       "id": 12,
       "options": {
@@ -1268,7 +1217,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 68
+        "y": 54
       },
       "id": 22,
       "options": {
@@ -1368,7 +1317,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 76
+        "y": 62
       },
       "id": 24,
       "options": {
@@ -1467,7 +1416,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 76
+        "y": 62
       },
       "id": 23,
       "options": {
