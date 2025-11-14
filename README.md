@@ -14,7 +14,7 @@ chmod +x otel/update-app.sh
 chmod +x app/update-app.sh
 ```
 
-If creating in own environment, update the following files:
+If creating in own environment, update the following files:  
 ./otel/env.  
 ./app/env.  
 ./nginx/app/upstream.conf  
