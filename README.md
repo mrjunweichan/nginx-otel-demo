@@ -1,8 +1,29 @@
-# nginx-otel
+# NGINX OpenTelemetry  
+Description on what this demo shows  
+
+---
+
+## Architecture  
+
+
+---
+
+## Prerequisites (NGINX version, OS requirements)  
+
+
+---
+
+## Quick Start  
+
+Advanced Options (Symbolic links)  
+
+Verification Steps (nginx -t, check status)  
+
+Troubleshooting (Common issues and solutions)  
 
 
 
-Run the following:
+Run the following:  
 ```
 chmod +x otel/locust/start-locust.sh
 mkdir -p otel/tempo/tempo-data/
