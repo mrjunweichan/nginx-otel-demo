@@ -2,8 +2,8 @@
 
 CONFIG_FILE="server_ip.yaml"
 TARGET_FILES=(
-    "conf.d/app/upstream.conf"
-    "conf.d/otel.conf"
+    "nginx/conf.d/app/upstream.conf"
+    "nginx/conf.d/otel.conf"
 )
 
 # Read config and replace in all target files
