@@ -17,4 +17,4 @@ while IFS=: read -r variable value; do
     done
 done < "$CONFIG_FILE"
 
-sudo nginx -t && sudo systemctl reload nginx
+sudo nginx -t && sudo systemctl restart nginx
