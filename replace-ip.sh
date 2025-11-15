@@ -2,6 +2,8 @@
 
 CONFIG_FILE="server_ip.yaml"
 TARGET_FILES=(
+    "otel/.env"
+    "app/.env"
     "nginx/conf.d/app/upstream.conf"
     "nginx/conf.d/otel.conf"
 )
