@@ -12,7 +12,14 @@ TARGET_FILES=(
 while IFS=: read -r variable value; do
     for file in "${TARGET_FILES[@]}"; do
         if [ -f "$file" ]; then
-            sudo sed -i "s/\\$variable/$value/g" "$file"
+            # If it's a template file, write to .conf instead
+            if [[ "$file" == *.template ]]; then
+                output_file="${file%.template}"
+                sudo sed "s/\\$variable/$value/g" "$file" > "$output_file"
+            else
+                # Regular file, replace in-place
+                sudo sed -i "s/\\$variable/$value/g" "$file"
+            fi
         fi
     done
 done < "$CONFIG_FILE"
