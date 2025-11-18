@@ -2,6 +2,7 @@
 
 CONFIG_FILE="server_ip.yaml"
 TARGET_FILES=(
+    "otel/prometheus/prometheus.yaml"
     "otel/.env"
     "app/.env"
     "nginx/conf.d/app/upstream.conf"
