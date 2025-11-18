@@ -10,5 +10,5 @@ scrape_configs:
     scrape_interval: 5s
 
     static_configs:
-      - targets: ['10.1.1.5:9113'] # NGINX VM
+      - targets: ['$NGX_SERVER_IP:9113'] # NGINX VM
 
